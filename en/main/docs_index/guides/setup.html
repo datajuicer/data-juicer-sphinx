@@ -32,7 +32,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=0f2a0175" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=b26f9bd0" />
   
   <!-- So that users can add custom icons -->
   <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -46,6 +46,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'docs_index/guides/setup';</script>
+    <script src="../../_static/sidebar.js?v=9ff78125"></script>
     <link rel="icon" href="../../_static/icon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -688,8 +689,8 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
 <span class="w">      </span><span class="nt">PROJECT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.event.repository.name }}</span>
 <span class="w">      </span><span class="nt">REPO_OWNER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.repository_owner }}</span>
 <span class="w">      </span><span class="nt">PACKAGE_DIR</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-project-src&quot;</span>
-<span class="w">      </span><span class="nt">HTML_TITLE</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Your</span><span class="nv"> </span><span class="s">Project</span><span class="nv"> </span><span class="s">Title&quot;</span><span class="w">  </span><span class="c1"># Optional: custom title</span>
-<span class="w">      </span><span class="nt">MIN_VERSION</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;v0.0.0&quot;</span><span class="w">             </span><span class="c1"># Optional: minimum version</span>
+<span class="w">      </span><span class="nt">HTML_TITLE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Your Project Title</span><span class="w">  </span><span class="c1"># Optional: Custom title</span>
+<span class="w">      </span><span class="nt">MIN_VERSION</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.0.0</span><span class="w">             </span><span class="c1"># Optional: Minimum version</span>
 <span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
 <span class="w">        </span><span class="nt">with</span><span class="p">:</span>
@@ -703,31 +704,28 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
 <span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astral-sh/setup-uv@v7</span>
 <span class="w">        </span><span class="nt">with</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">enable-cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies with uv</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies with uv</span><span class="w"> </span><span class="c1"># Install project dependencies</span>
 <span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
 <span class="w">          </span><span class="no">uv pip install --system --upgrade pip</span>
 <span class="w">          </span><span class="no">uv pip install --system -e .[all]</span>
 
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Fetch Data-Juicer Sphinx Template</span><span class="w"> </span><span class="c1"># Pull template and overwrite docs/sphinx_doc, skipping custom files</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Fetch Data-Juicer Sphinx Template</span><span class="w"> </span><span class="c1"># Pull template and overwrite docs/sphinx_doc, skip custom files</span>
 <span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
 <span class="w">          </span><span class="no">set -e</span>
 <span class="w">          </span><span class="no">echo &quot;Cloning sphinx template...&quot;</span>
 <span class="w">          </span><span class="no">git clone --depth=1 https://github.com/datajuicer/data-juicer-sphinx.git /tmp/template</span>
 <span class="w">          </span><span class="no">uv pip install --system -e /tmp/template</span>
-<span class="w">          </span>
 <span class="w">          </span><span class="no">if [ -d &quot;docs/sphinx_doc/source&quot; ]; then</span>
 <span class="w">            </span><span class="no">echo &quot;Backing up custom files...&quot;</span>
 <span class="w">            </span><span class="no">mkdir -p /tmp/custom_files</span>
 <span class="w">            </span><span class="no">cp -r docs/sphinx_doc/source /tmp/custom_files</span>
 <span class="w">          </span><span class="no">fi</span>
-<span class="w">          </span>
 <span class="w">          </span><span class="no">echo &quot;Applying template...&quot;</span>
 <span class="w">          </span><span class="no">rm -rf docs/sphinx_doc</span>
 <span class="w">          </span><span class="no">mkdir -p docs</span>
 <span class="w">          </span><span class="no">cp -r /tmp/template/docs/sphinx_doc docs/</span>
-
 <span class="w">          </span><span class="no">echo &quot;Restoring custom files...&quot;</span>
-<span class="w">          </span><span class="no">cp -rf /tmp/custom_files/* docs/sphinx_doc/source</span>
+<span class="w">          </span><span class="no">cp -rf /tmp/custom_files/source/* docs/sphinx_doc/source</span>
 <span class="w">          </span><span class="no">echo &quot;Done!&quot;</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Get git tags</span>
 <span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
@@ -744,7 +742,6 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
 <span class="w">          </span><span class="no">REPOSITORY_OWNER=&quot;${GITHUB_REPOSITORY_OWNER}&quot;</span>
 <span class="w">          </span><span class="no">cd docs/sphinx_doc</span>
 <span class="w">          </span><span class="no">cp ./redirect.html build/index.html</span>
-<span class="w">          </span><span class="no">sed -i &quot;s/\[VERSION\]/$(python -c &#39;import data_juicer;print(data_juicer.__version__)&#39;)/g&quot; build/index.html</span>
 <span class="w">          </span><span class="no">sed -i &quot;s/\[REPOSITORY_OWNER\]/${REPOSITORY_OWNER}/g&quot; build/index.html</span>
 <span class="w">          </span><span class="no">sed -i &quot;s/\[PROJECT\]/${PROJECT}/g&quot; build/index.html</span>
 <span class="w">          </span><span class="no">cp build/index.html build/404.html</span>
@@ -755,12 +752,12 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
 <span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;docs/sphinx_doc/build&quot;</span>
 
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy to GitHub Pages</span>
-<span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.event_name == &#39;push&#39; &amp;&amp; github.ref == &#39;refs/heads/main&#39;</span>
+<span class="w">        </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.event_name == &#39;push&#39; &amp;&amp; (github.ref == &#39;refs/heads/main&#39; || startsWith(github.ref, &#39;refs/tags/&#39;)) }}</span>
 <span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">peaceiris/actions-gh-pages@v3</span>
 <span class="w">        </span><span class="nt">with</span><span class="p">:</span>
 <span class="w">          </span><span class="nt">github_token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GITHUB_TOKEN }}</span>
 <span class="w">          </span><span class="nt">publish_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./docs/sphinx_doc/build</span>
-<span class="w">          </span><span class="nt">cname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your-domain.com</span><span class="w">  </span><span class="c1"># Optional: if using a custom domain</span>
+<span class="w">          </span><span class="nt">cname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your-domain.com</span><span class="w">  </span><span class="c1"># Optional: Use custom domain</span>
 </pre></div>
 </div>
 <p><strong>Enable GitHub Pages</strong>:</p>
