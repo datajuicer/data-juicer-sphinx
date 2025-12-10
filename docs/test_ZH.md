@@ -33,3 +33,7 @@
 ```
 
 `docs/*` 将匹配所有从 `docs/` 目录复制过来的文件，例如本文档。
+
+## media 显示测试
+
+<img src="imgs/TEST.png" width="70%" height="70%">

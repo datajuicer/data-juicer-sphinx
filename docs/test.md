@@ -33,3 +33,7 @@ the documentation for the project
 ```
 
 The pattern `docs/*` will match all files copied from the `docs/` directory, for example this very document.
+
+## media display test
+
+<img src="imgs/TEST.png" width="70%" height="70%">

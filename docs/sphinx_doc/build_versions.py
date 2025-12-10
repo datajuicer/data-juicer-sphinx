@@ -168,7 +168,23 @@ def copy_markdown_files(wt_root: Path):
             wt_root / DOCS_REL / "source" / "extra" / "docs_index" / EXTRA_DATA_REL,
             dirs_exist_ok=True,
         )
-
+    
+    docs_dir = wt_root / "docs"
+    
+    if docs_dir.exists():
+        for file in docs_dir.rglob("*"):
+            if file.is_file():
+                if any(path in str(file) for path in exclude_paths):
+                    continue
+                rel_path = file.relative_to(docs_dir)
+                target = wt_root / DOCS_REL / "source" / "extra" / "docs_index" / "docs" /rel_path
+                
+                target_dir = target.parent
+                target_dir.mkdir(parents=True, exist_ok=True)
+                
+                if not target.exists():
+                    print(f"[COPY] {file} -> {target}")
+                    shutil.copy2(file, target)
 
 def build_one(
     ref: str,
