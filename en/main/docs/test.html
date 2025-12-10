@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; Data Juicer Sphinx</title>
+    <title>TEST DOCUMENT &#8212; Data Juicer Sphinx</title>
   
   
   
@@ -45,11 +45,12 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'source/index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs/test';</script>
     <script src="../_static/sidebar.js?v=9ff78125"></script>
     <link rel="icon" href="../_static/icon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Enable This Template for Your Project" href="../guides/setup.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -136,7 +137,7 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../docs_index.html">
     DOCS
   </a>
@@ -223,12 +224,12 @@
     <div class="navbar-dropdown-panel">
       <div class="dropdown-content">
         
-        <a href="../../../en/main/source/index.html"
+        <a href="../../../en/main/docs/test.html"
            class="dropdown-item active">
           English
         </a>
         
-        <a href="../../../zh_CN/main/source/index_ZH.html"
+        <a href="../../../zh_CN/main/docs/test_ZH.html"
            class="dropdown-item ">
           简体中文
         </a>
@@ -249,7 +250,7 @@
     <div class="navbar-dropdown-panel">
       <div class="dropdown-content version-list">
         
-        <a href="../../main/source/index.html"
+        <a href="../../main/docs/test.html"
            class="dropdown-item active">
           main
         </a>
@@ -288,10 +289,8 @@
       
       
       
-        
-      
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -306,7 +305,7 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../docs_index.html">
     DOCS
   </a>
@@ -386,12 +385,12 @@
     <div class="navbar-dropdown-panel">
       <div class="dropdown-content">
         
-        <a href="../../../en/main/source/index.html"
+        <a href="../../../en/main/docs/test.html"
            class="dropdown-item active">
           English
         </a>
         
-        <a href="../../../zh_CN/main/source/index_ZH.html"
+        <a href="../../../zh_CN/main/docs/test_ZH.html"
            class="dropdown-item ">
           简体中文
         </a>
@@ -412,7 +411,7 @@
     <div class="navbar-dropdown-panel">
       <div class="dropdown-content version-list">
         
-        <a href="../../main/source/index.html"
+        <a href="../../main/docs/test.html"
            class="dropdown-item active">
           main
         </a>
@@ -426,6 +425,21 @@
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../guides/setup.html">Enable This Template for Your Project</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">TEST DOCUMENT</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -462,7 +476,10 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">&lt;no title&gt;</span></li>
+    
+    <li class="breadcrumb-item"><a href="../docs_index.html" class="nav-link">DOCS</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">TEST DOCUMENT</span></li>
   </ul>
 </nav>
 </div>
@@ -479,13 +496,43 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="docs_index.html">DOCS</a><ul class="simple">
-</ul>
-</li>
-</ul>
+  <section id="test-document">
+<h1>TEST DOCUMENT<a class="headerlink" href="#test-document" title="Link to this heading">#</a></h1>
+<p>This is a test document. It resides at <code class="docutils literal notranslate"><span class="pre">docs/test.md</span></code> in the root directory and exists in both Chinese and English versions.</p>
+<p>If you can see this document, it means the <a class="reference external" href="https://github.com/datajuicer/data-juicer-sphinx/blob/main/docs/sphinx_doc/build_versions.py">build script</a> successfully copied external Markdown documents from the project into the Sphinx source directory (<code class="docutils literal notranslate"><span class="pre">docs/sphinx_doc/source/docs_index/</span></code>) before the Sphinx build process, enabling them to be properly included in the final documentation.</p>
+<blockquote>
+<div><p>💡 <strong>Integration Rules</strong>:<br />
+The build script automatically scans all directories under the project root—excluding <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>, <code class="docutils literal notranslate"><span class="pre">sphinx_doc/</span></code>, and <code class="docutils literal notranslate"><span class="pre">.github/</span></code>—and copies any Markdown files (<code class="docutils literal notranslate"><span class="pre">.md</span></code>) into the documentation source directory used for building.<br />
+Therefore, you can write Markdown documentation in any non-excluded directory such as <code class="docutils literal notranslate"><span class="pre">docs/</span></code>, <code class="docutils literal notranslate"><span class="pre">guides/</span></code>, <code class="docutils literal notranslate"><span class="pre">src/</span></code>, etc.</p>
+</div></blockquote>
+<p>As long as these files are correctly referenced using <code class="docutils literal notranslate"><span class="pre">:glob:</span></code> in <code class="docutils literal notranslate"><span class="pre">docs/sphinx_doc/source/docs_index/index.rst</span></code> (English) and <code class="docutils literal notranslate"><span class="pre">index_ZH.rst</span></code> (Chinese), they will typically appear on the final site just like this document.</p>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
+<div class="highlight-rst notranslate"><div class="highlight"><pre><span></span><span class="gh">====</span>
+<span class="gh">DOCS</span>
+<span class="gh">====</span>
+
+the documentation for the project
+
+<span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span>
+   <span class="nc">:maxdepth:</span> 2
+   <span class="nc">:glob:</span>
+
+   guides/*
+
+<span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span>
+   <span class="nc">:maxdepth:</span> 2
+   <span class="nc">:glob:</span>
+   
+   docs/*
+</pre></div>
 </div>
+<p>The pattern <code class="docutils literal notranslate"><span class="pre">docs/*</span></code> will match all files copied from the <code class="docutils literal notranslate"><span class="pre">docs/</span></code> directory, for example this very document.</p>
+</section>
+<section id="media-display-test">
+<h2>media display test<a class="headerlink" href="#media-display-test" title="Link to this heading">#</a></h2>
+<img src="imgs/TEST.png" width="70%" height="70%"></section>
+</section>
 
 
                 </article>
@@ -497,6 +544,15 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="../guides/setup.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Enable This Template for Your Project</p>
+      </div>
+    </a>
 </div>
                 </footer>
               
@@ -509,10 +565,23 @@
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#media-display-test">media display test</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/source/index.rst.txt"
+      <li><a href="../_sources/docs/test.md.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

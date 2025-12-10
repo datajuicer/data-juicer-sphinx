@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Data-Juicer Sphinx Documentation Template &#8212; Data Juicer Sphinx</title>
+    <title>DOCS &#8212; Data Juicer Sphinx</title>
   
   
   
@@ -45,11 +45,13 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'README';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'docs_index';</script>
     <script src="_static/sidebar.js?v=9ff78125"></script>
     <link rel="icon" href="_static/icon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Enable This Template for Your Project" href="guides/setup.html" />
+    <link rel="prev" title="Data-Juicer Sphinx Documentation Template" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -136,8 +138,8 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="docs_index.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     DOCS
   </a>
 </li>
@@ -223,12 +225,12 @@
     <div class="navbar-dropdown-panel">
       <div class="dropdown-content">
         
-        <a href="./../../en/main/README.html"
+        <a href="./../../en/main/docs_index.html"
            class="dropdown-item active">
           English
         </a>
         
-        <a href="./../../zh_CN/main/README_ZH.html"
+        <a href="./../../zh_CN/main/docs_index_ZH.html"
            class="dropdown-item ">
           简体中文
         </a>
@@ -249,7 +251,7 @@
     <div class="navbar-dropdown-panel">
       <div class="dropdown-content version-list">
         
-        <a href="./../main/README.html"
+        <a href="./../main/docs_index.html"
            class="dropdown-item active">
           main
         </a>
@@ -288,10 +290,8 @@
       
       
       
-        
-      
       <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -306,8 +306,8 @@
 <nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="docs_index.html">
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
     DOCS
   </a>
 </li>
@@ -386,12 +386,12 @@
     <div class="navbar-dropdown-panel">
       <div class="dropdown-content">
         
-        <a href="./../../en/main/README.html"
+        <a href="./../../en/main/docs_index.html"
            class="dropdown-item active">
           English
         </a>
         
-        <a href="./../../zh_CN/main/README_ZH.html"
+        <a href="./../../zh_CN/main/docs_index_ZH.html"
            class="dropdown-item ">
           简体中文
         </a>
@@ -412,7 +412,7 @@
     <div class="navbar-dropdown-panel">
       <div class="dropdown-content version-list">
         
-        <a href="./../main/README.html"
+        <a href="./../main/docs_index.html"
            class="dropdown-item active">
           main
         </a>
@@ -426,6 +426,21 @@
       </div>
     
   </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="guides/setup.html">Enable This Template for Your Project</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="docs/test.html">TEST DOCUMENT</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
@@ -462,7 +477,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Data-Juicer Sphinx Documentation Template</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">DOCS</span></li>
   </ul>
 </nav>
 </div>
@@ -479,131 +494,30 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="data-juicer-sphinx-documentation-template">
-<h1>Data-Juicer Sphinx Documentation Template<a class="headerlink" href="#data-juicer-sphinx-documentation-template" title="Link to this heading">#</a></h1>
-<p>This is a unified documentation build template designed for the Data-Juicer ecosystem. Built on Sphinx and pydata-sphinx-theme, it provides multi-version and multi-language documentation capabilities, ensuring consistent documentation appearance and user experience across all subprojects.</p>
-<section id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>Unified Appearance</strong>: All subprojects share the same documentation theme and styling.</p></li>
-<li><p><strong>Multi-Version Support</strong>: Automatically builds documentation for multiple Git branches and tags.</p></li>
-<li><p><strong>Multi-Language Support</strong>: Supports both English and Chinese by default.</p></li>
-<li><p><strong>Ecosystem Interconnectivity</strong>: Enables seamless navigation between different project documentations via header external links.</p></li>
-<li><p><strong>Markdown-Friendly</strong>: Automatically discovers and integrates Markdown documents within the project.</p></li>
+  <section id="docs">
+<h1>DOCS<a class="headerlink" href="#docs" title="Link to this heading">#</a></h1>
+<p>the documentation for the project</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guides/setup.html">Enable This Template for Your Project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/setup.html#prerequisites">1. Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/setup.html#integrate-into-your-project">2. Integrate into Your Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/setup.html#customization">3. Customization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/setup.html#local-build-and-testing">4. Local Build and Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/setup.html#github-actions-automatic-deployment">5. GitHub Actions Automatic Deployment</a></li>
 </ul>
-</section>
-<section id="project-structure">
-<h2>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading">#</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>data-juicer-sphinx/
-├── docs/
-│   └── sphinx_doc/                              # Sphinx documentation build directory
-│       ├── build_versions.py                    # Multi-version build script (main entry point)
-│       ├── make.bat / Makefile                  # Build scripts
-│       ├── redirect.html                        # Redirect page
-│       └── source/                              # Documentation source files
-│           ├── conf.py                          # Sphinx configuration file
-│           ├── custom_myst.py                   # Custom MyST extension
-│           ├── external_links.yaml              # External project link configuration
-│           ├── index.rst / index_ZH.rst         # Home page (customization recommended)
-│           ├── docs_index/                      # Documentation index directory
-│           │   ├── index.rst / index_ZH.rst     # Documentation index page (customization recommended)
-│           │   └── ...                          # Automatically copied Markdown files
-│           ├── api.rst                          # API documentation index (customization recommended)
-│           ├── _static/                         # Static assets
-│           │   ├── custom.css                   # Custom styles
-│           │   └── images/                      # Logos and icons
-│           └── _templates/                      # Custom templates
-│               └── version-language-switcher.html
-├── guides/                                      # Usage guides
-├── pyproject.toml                               # Project configuration
-├── README.md                                    
-└── README_ZH.md                                 
-</pre></div>
+</li>
+</ul>
 </div>
-</section>
-<section id="quick-start">
-<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
-<p>Build the simplest English Data-Juicer Sphinx documentation (without API docs):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/datajuicer/data-juicer-sphinx.git
-
-uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
-
-<span class="nb">cd</span><span class="w"> </span>docs/sphinx_doc
-<span class="nb">export</span><span class="w"> </span><span class="nv">PROJECT</span><span class="o">=</span><span class="s2">&quot;data-juicer-sphinx&quot;</span>
-python<span class="w"> </span>build_versions.py<span class="w"> </span>-A<span class="w"> </span>-l<span class="w"> </span>en
-</pre></div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs/test.html">TEST DOCUMENT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docs/test.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/test.html#media-display-test">media display test</a></li>
+</ul>
+</li>
+</ul>
 </div>
-</section>
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://datajuicer.github.io/data-juicer-sphinx/en/main/index.html">Here</a></p>
-</section>
-<section id="core-principles">
-<h2>Core Principles<a class="headerlink" href="#core-principles" title="Link to this heading">#</a></h2>
-<section id="isolated-build-environment-git-worktree">
-<h3><strong>Isolated Build Environment (Git Worktree)</strong><a class="headerlink" href="#isolated-build-environment-git-worktree" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Creates an independent Git worktree for each version (branch/tag) at <code class="docutils literal notranslate"><span class="pre">.worktrees/&lt;version&gt;</span></code>.</p></li>
-<li><p>Automatically cleans up after building (unless <code class="docutils literal notranslate"><span class="pre">KEEP_WORKTREES=True</span></code> is set in <code class="docutils literal notranslate"><span class="pre">docs/sphinx_doc/build_versions.py</span></code>) to avoid polluting the main working directory.</p></li>
-</ul>
-</section>
-<section id="documentation-content-aggregation">
-<h3><strong>Documentation Content Aggregation</strong><a class="headerlink" href="#documentation-content-aggregation" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p>Automatically scans the entire worktree to collect all <code class="docutils literal notranslate"><span class="pre">.md</span></code> and <code class="docutils literal notranslate"><span class="pre">.rst</span></code> files (excluding directories like <code class="docutils literal notranslate"><span class="pre">outputs</span></code>, <code class="docutils literal notranslate"><span class="pre">sphinx_doc</span></code>, <code class="docutils literal notranslate"><span class="pre">.github</span></code>, etc.).</p></li>
-<li><p>Copies these files into a unified Sphinx source directory: <code class="docutils literal notranslate"><span class="pre">docs/sphinx_doc/source/docs_index/</span></code>.</p></li>
-<li><p>(Customized for Data-Juicer operator documentation) For subdirectories under <code class="docutils literal notranslate"><span class="pre">operators/</span></code>, automatically generates corresponding <code class="docutils literal notranslate"><span class="pre">index.rst</span></code> and <code class="docutils literal notranslate"><span class="pre">index_ZH.rst</span></code> files to facilitate categorized operator indexing.</p></li>
-</ul>
-</section>
-</section>
-<section id="frequently-asked-questions">
-<h2>Frequently Asked Questions<a class="headerlink" href="#frequently-asked-questions" title="Link to this heading">#</a></h2>
-<section id="q1-build-fails-with-module-not-found-error">
-<h3>Q1: Build fails with “module not found” error<a class="headerlink" href="#q1-build-fails-with-module-not-found-error" title="Link to this heading">#</a></h3>
-<p><strong>A</strong>: Ensure all dependencies are installed before building:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
-</pre></div>
-</div>
-</section>
-<section id="q2-api-documentation-isn-t-generated">
-<h3>Q2: API documentation isn’t generated<a class="headerlink" href="#q2-api-documentation-isn-t-generated" title="Link to this heading">#</a></h3>
-<p><strong>A</strong>: Check the following:</p>
-<ul class="simple">
-<li><p>Ensure you didn’t use the <code class="docutils literal notranslate"><span class="pre">--no-api-doc</span></code> or <code class="docutils literal notranslate"><span class="pre">-A</span></code> flags</p></li>
-<li><p>Verify your project contains importable Python modules</p></li>
-<li><p>Confirm the <code class="docutils literal notranslate"><span class="pre">CODE_ROOT</span></code> environment variable is correctly set</p></li>
-</ul>
-</section>
-<section id="q3-external-links-aren-t-displayed">
-<h3>Q3: External links aren’t displayed<a class="headerlink" href="#q3-external-links-aren-t-displayed" title="Link to this heading">#</a></h3>
-<p><strong>A</strong>:</p>
-<ol class="arabic simple">
-<li><p>Verify that <code class="docutils literal notranslate"><span class="pre">external_links.yaml</span></code> is configured correctly</p></li>
-<li><p>Ensure the <code class="docutils literal notranslate"><span class="pre">PROJECT</span></code> environment variable is properly set</p></li>
-<li><p>Check the browser console for JavaScript errors</p></li>
-</ol>
-</section>
-<section id="q4-chinese-documentation-links-don-t-exist">
-<h3>Q4: Chinese documentation links don’t exist<a class="headerlink" href="#q4-chinese-documentation-links-don-t-exist" title="Link to this heading">#</a></h3>
-<p><strong>A</strong>: Ensure:</p>
-<ul class="simple">
-<li><p>Chinese documentation files end with <code class="docutils literal notranslate"><span class="pre">_ZH.md</span></code> or <code class="docutils literal notranslate"><span class="pre">_ZH.rst</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">index_ZH.rst</span></code> exists and is correctly configured</p></li>
-</ul>
-</section>
-<section id="q5-page-doesn-t-exist-after-switching-versions">
-<h3>Q5: Page doesn’t exist after switching versions<a class="headerlink" href="#q5-page-doesn-t-exist-after-switching-versions" title="Link to this heading">#</a></h3>
-<p><strong>A</strong>: Documentation structures may differ between versions:</p>
-<ul class="simple">
-<li><p>Older versions might lack certain new pages</p></li>
-<li><p>Version switching attempts to access the same path; if unavailable, it redirects to the homepage</p></li>
-</ul>
-</section>
-</section>
-<section id="contribution-guide">
-<h2>Contribution Guide<a class="headerlink" href="#contribution-guide" title="Link to this heading">#</a></h2>
-<p>Contributions and improvements to this template are warmly welcomed! ❤</p>
-</section>
 </section>
 
 
@@ -616,6 +530,24 @@ python<span class="w"> </span>build_versions.py<span class="w"> </span>-A<span c
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Data-Juicer Sphinx Documentation Template</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="guides/setup.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Enable This Template for Your Project</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -628,39 +560,10 @@ python<span class="w"> </span>build_versions.py<span class="w"> </span>-A<span c
 
 
   <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-structure">Project Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#core-principles">Core Principles</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#isolated-build-environment-git-worktree"><strong>Isolated Build Environment (Git Worktree)</strong></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation-content-aggregation"><strong>Documentation Content Aggregation</strong></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frequently-asked-questions">Frequently Asked Questions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1-build-fails-with-module-not-found-error">Q1: Build fails with “module not found” error</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2-api-documentation-isn-t-generated">Q2: API documentation isn’t generated</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3-external-links-aren-t-displayed">Q3: External links aren’t displayed</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q4-chinese-documentation-links-don-t-exist">Q4: Chinese documentation links don’t exist</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q5-page-doesn-t-exist-after-switching-versions">Q5: Page doesn’t exist after switching versions</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contribution-guide">Contribution Guide</a></li>
-</ul>
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/README.md.txt"
+      <li><a href="_sources/docs_index.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
