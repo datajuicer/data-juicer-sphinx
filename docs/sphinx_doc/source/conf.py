@@ -276,7 +276,7 @@ def process_doc_links(app, docname, source):
         text, path = match.group(1), match.group(2)
         abs_path = os.path.normpath(
             os.path.join(os.path.dirname(docname), path)
-        ).replace("docs_index/", "")
+        )
         return f"[{text}]({repo_base}{abs_path})"
 
     pattern = r"\[([^\]]+)\]\((?!http|#)([^)]*(?<!\.md)(?<!\.rst))\)"

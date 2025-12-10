@@ -144,7 +144,6 @@ def copy_markdown_files(wt_root: Path):
                 wt_root
                 / DOCS_REL
                 / "source"
-                / "docs_index"
                 / md_file.relative_to(wt_root)
             )
         target_dir = target.parent
@@ -163,7 +162,7 @@ def copy_markdown_files(wt_root: Path):
         if any(path in str(rst_file) for path in exclude_paths):
             continue
         target = (
-            wt_root / DOCS_REL / "source" / "docs_index" / rst_file.relative_to(wt_root)
+            wt_root / DOCS_REL / "source" / rst_file.relative_to(wt_root)
         )
         target.parent.mkdir(parents=True, exist_ok=True)
         if not target.exists():
@@ -176,7 +175,7 @@ def copy_markdown_files(wt_root: Path):
         if (wt_root / asset_rel_path).exists():
             shutil.copytree(
                 wt_root / asset_rel_path,
-                wt_root / DOCS_REL / "source" / "extra" / "docs_index" / asset_rel_path,
+                wt_root / DOCS_REL / "source" / "extra" / asset_rel_path,
                 dirs_exist_ok=True,
             )
 
