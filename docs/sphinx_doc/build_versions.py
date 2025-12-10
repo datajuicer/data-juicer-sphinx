@@ -4,6 +4,7 @@ import re
 import shutil
 import subprocess
 import argparse
+import yaml
 from pathlib import Path
 import translators as ts
 from packaging import version as pv
@@ -50,6 +51,13 @@ def get_tags():
     tags = [t for t in out.splitlines() if t]
     return [t for t in tags if is_valid_tag(t)]
 
+def load_extra_assets_config():
+    config_path = os.path.join(os.path.dirname(__file__), "source/extra_assets.yaml")
+    if not os.path.exists(config_path):
+        return {"assets": []}
+
+    with open(config_path, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f)
 
 def ensure_clean_worktree(path: Path):
     """Remove existing worktree if present to ensure clean state"""
@@ -162,29 +170,15 @@ def copy_markdown_files(wt_root: Path):
             print(f"[COPY] {rst_file} -> {target}")
             shutil.copy2(rst_file, target)
 
-    if (wt_root / EXTRA_DATA_REL).exists():
-        shutil.copytree(
-            wt_root / EXTRA_DATA_REL,
-            wt_root / DOCS_REL / "source" / "extra" / "docs_index" / EXTRA_DATA_REL,
-            dirs_exist_ok=True,
-        )
+    assets_list = load_extra_assets_config()["assets"]
     
-    docs_dir = wt_root / "docs"
-    
-    if docs_dir.exists():
-        for file in docs_dir.rglob("*"):
-            if file.is_file():
-                if any(path in str(file) for path in exclude_paths):
-                    continue
-                rel_path = file.relative_to(docs_dir)
-                target = wt_root / DOCS_REL / "source" / "extra" / "docs_index" / "docs" /rel_path
-                
-                target_dir = target.parent
-                target_dir.mkdir(parents=True, exist_ok=True)
-                
-                if not target.exists():
-                    print(f"[COPY] {file} -> {target}")
-                    shutil.copy2(file, target)
+    for asset_rel_path in assets_list:
+        if (wt_root / asset_rel_path).exists():
+            shutil.copytree(
+                wt_root / asset_rel_path,
+                wt_root / DOCS_REL / "source" / "extra" / "docs_index" / asset_rel_path,
+                dirs_exist_ok=True,
+            )
 
 def build_one(
     ref: str,
