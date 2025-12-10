@@ -534,9 +534,10 @@ cp<span class="w"> </span>-r<span class="w"> </span>data-juicer-sphinx/docs/sphi
 <h3>3.1 设置项目信息<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <p>在构建时通过环境变量设置：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PROJECT</span><span class="o">=</span><span class="s2">&quot;your-project-name&quot;</span><span class="w">        </span><span class="c1"># 例如：data-juicer-hub</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">PACKAGE_DIR</span><span class="o">=</span><span class="s2">&quot;your-project-src&quot;</span><span class="w">     </span><span class="c1"># 生成 API 文档所用的包目录</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">REPO_OWNER</span><span class="o">=</span><span class="s2">&quot;your-repo-owner&quot;</span><span class="w">       </span><span class="c1"># 例如：datajuicer</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">PACKAGE_DIR</span><span class="o">=</span><span class="s2">&quot;your-project-src&quot;</span><span class="w">     </span><span class="c1"># 生成 API 文档所用的包目录（可选）</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">HTML_TITLE</span><span class="o">=</span><span class="s2">&quot;Your Project Title&quot;</span><span class="w">    </span><span class="c1"># 例如：Data Juicer Hub（可选）</span>
-<span class="nb">export</span><span class="w"> </span><span class="nv">MIN_VERSION</span><span class="o">=</span><span class="s2">&quot;v0.0.1&quot;</span><span class="w">               </span><span class="c1"># 指定从此版本开始构建（可选）</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MIN_TAG</span><span class="o">=</span><span class="s2">&quot;v0.0.1&quot;</span><span class="w">               </span><span class="c1"># 指定从此版本开始构建（可选）</span>
 </pre></div>
 </div>
 <p>或在 GitHub Actions workflow 中设置（见第 5 节）。</p>
@@ -547,9 +548,11 @@ cp<span class="w"> </span>-r<span class="w"> </span>data-juicer-sphinx/docs/sphi
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>docs/sphinx_doc/source/
 ├── index.rst              # 英文主页：项目介绍 + 页眉导航（DOCS/API）
 ├── index_ZH.rst           # 中文主页：项目介绍 + 页眉导航（DOCS/API）
-├── docs_index.rst          # 英文文档索引
-├── docs_index_ZH.rst       # 中文文档索引
-└── api.rst                # API 文档索引（如果需要）
+├── docs_index.rst         # 英文文档索引
+├── docs_index_ZH.rst      # 中文文档索引
+├── api.rst                # API 文档索引
+├── external_links.yaml    # 项目外链
+└── extra_assets.yaml      # 额外资源
 </pre></div>
 </div>
 <p><strong>示例：<code class="docutils literal notranslate"><span class="pre">index.rst</span></code></strong></p>
@@ -559,6 +562,7 @@ cp<span class="w"> </span>-r<span class="w"> </span>data-juicer-sphinx/docs/sphi
    <span class="nc">:parser:</span> myst_parser.sphinx_
 
 <span class="c">.. 页眉导航</span>
+<span class="c">.. 设置几个 toctree，页眉就会显示几个导航</span>
 <span class="c">.. 此处建议只保留 DOCS 和 API，以免页眉导航过多</span>
 <span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span>
    <span class="nc">:maxdepth:</span> 2
@@ -573,6 +577,9 @@ cp<span class="w"> </span>-r<span class="w"> </span>data-juicer-sphinx/docs/sphi
    api
 </pre></div>
 </div>
+<blockquote>
+<div><p>注意：extra_assets.yaml 的用法见<a class="reference internal" href="../docs/test_ZH.html"><span class="std std-doc">测试文档</span></a></p>
+</div></blockquote>
 </section>
 <section id="id7">
 <h3>3.3 配置项目外链<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
@@ -628,7 +635,7 @@ pip<span class="w"> </span>install<span class="w"> </span>.
 <span class="c1"># 基础构建：只构建 main 分支，启用 API 文档</span>
 <span class="nv">PROJECT</span><span class="o">=</span><span class="s2">&quot;your-project&quot;</span><span class="w"> </span>python<span class="w"> </span>build_versions.py
 
-<span class="c1"># 构建所有有效标签（&gt;= v1.4.0）</span>
+<span class="c1"># 构建所有有效标签（&gt;= MIN_TAG）</span>
 <span class="nv">PROJECT</span><span class="o">=</span><span class="s2">&quot;your-project&quot;</span><span class="w"> </span>python<span class="w"> </span>build_versions.py<span class="w"> </span>--tags
 
 <span class="c1"># 构建指定标签</span>
@@ -690,7 +697,7 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
 <span class="w">      </span><span class="nt">REPO_OWNER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.repository_owner }}</span>
 <span class="w">      </span><span class="nt">PACKAGE_DIR</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;your-project-src&quot;</span>
 <span class="w">      </span><span class="nt">HTML_TITLE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Your Project Title</span><span class="w">  </span><span class="c1"># 可选：自定义标题</span>
-<span class="w">      </span><span class="nt">MIN_VERSION</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.0.0</span><span class="w">             </span><span class="c1"># 可选：最小版本</span>
+<span class="w">      </span><span class="nt">MIN_TAG</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.0.0</span><span class="w">             </span><span class="c1"># 可选：最小版本</span>
 <span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
 <span class="w">        </span><span class="nt">with</span><span class="p">:</span>
