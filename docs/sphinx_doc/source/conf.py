@@ -160,7 +160,7 @@ def build_external_links(current_project, language, version):
     link_order = config.get("link_order", [])
     url_template = config.get(
         "url_template",
-        "https://{REPO_OWNER}.github.io/{project}/{language}/{version}/index.html",
+        "https://{repo_owner}.github.io/{project}/{language}/{version}/index.html",
     )
 
     external_links = []
@@ -177,6 +177,7 @@ def build_external_links(current_project, language, version):
         project_info = projects[project_name]
 
         url = url_template.format(
+            repo_owner=REPO_OWNER,
             project=project_info.get("repo_name", project_name),
             language=language,
             version="main",  # Use "main" as default version

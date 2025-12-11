@@ -38,27 +38,6 @@ jobs:
         run: |
           uv pip install --system --upgrade pip
           uv pip install --system -e .[all]
-      - name: Fetch Data-Juicer Sphinx Template
-        run: |
-          set -e
-          echo "Cloning sphinx template..."
-          git clone --depth=1 https://github.com/datajuicer/data-juicer-sphinx.git /tmp/template
-          uv pip install --system -e /tmp/template
-          
-          if [ -d "docs/sphinx_doc/source" ]; then
-            echo "Backing up custom files..."
-            mkdir -p /tmp/custom_files
-            cp -r docs/sphinx_doc/source /tmp/custom_files
-          fi
-          
-          echo "Applying template..."
-          rm -rf docs/sphinx_doc
-          mkdir -p docs
-          cp -r /tmp/template/docs/sphinx_doc docs/
-
-          echo "Restoring custom files..."
-          cp -rf /tmp/custom_files/* docs/sphinx_doc/source
-          echo "Done!"
       - name: Get git tags
         run: |
           git fetch --all --tags
@@ -74,7 +53,6 @@ jobs:
           REPOSITORY_OWNER="${GITHUB_REPOSITORY_OWNER}"
           cd docs/sphinx_doc
           cp ./redirect.html build/index.html
-          sed -i "s/\[VERSION\]/$(python -c 'import data_juicer;print(data_juicer.__version__)')/g" build/index.html
           sed -i "s/\[REPOSITORY_OWNER\]/${REPOSITORY_OWNER}/g" build/index.html
           sed -i "s/\[PROJECT\]/${PROJECT}/g" build/index.html
           cp build/index.html build/404.html
@@ -84,6 +62,7 @@ jobs:
           name: SphinxDoc
           path: "docs/sphinx_doc/build"
       - uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')) }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: "docs/sphinx_doc/build"
