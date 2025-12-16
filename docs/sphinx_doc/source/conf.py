@@ -115,8 +115,9 @@ html_sidebars = {
 # Static files
 html_css_files = [
     "custom.css",
+    "ask-ai-widget.css"
 ]
-html_js_files = ['sidebar.js', 'switcher-mobile.js']
+html_js_files = ['sidebar.js', 'ask-ai-widget.js', 'switcher-mobile.js']
 
 html_static_path = ["_static"]
 html_extra_path = ["extra"]
