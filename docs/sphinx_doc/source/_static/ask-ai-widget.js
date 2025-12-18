@@ -3,11 +3,22 @@
  */
 class AskAIWidget {
   constructor() {
+    if (typeof marked === 'undefined') {
+      console.error('Marked library not loaded!');
+      console.info('Add this to your HTML: <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>');
+      return;
+    }
     this.isOpen = false;
     this.messages = [];
     this.isTyping = false;
     this.apiConnected = false;
     this.sessionId = this.generateSessionId();
+    marked.setOptions({
+      breaks: true,
+      gfm: true,
+      headerIds: false,
+      mangle: false,
+    });
     this.init();
   }
 
@@ -126,12 +137,12 @@ class AskAIWidget {
 
     // Close modal when clicking outside
     document.addEventListener('click', (e) => {
-      if (this.isOpen && 
-          !this.modal.contains(e.target) && 
-          !this.button.contains(e.target) &&
-          !this.expandBtn.contains(e.target) &&
-          !this.closeBtn.contains(e.target) &&
-          !this.clearBtn.contains(e.target)) {
+      if (this.isOpen &&
+        !this.modal.contains(e.target) &&
+        !this.button.contains(e.target) &&
+        !this.expandBtn.contains(e.target) &&
+        !this.closeBtn.contains(e.target) &&
+        !this.clearBtn.contains(e.target)) {
         this.closeModal();
       }
     });
@@ -166,10 +177,10 @@ class AskAIWidget {
 
   toggleExpand() {
     this.isExpanded = !this.isExpanded;
-    
+
     if (this.isExpanded) {
       this.modal.classList.add('expanded');
-      // 尝试查找图标元素（可能是 <i> 或 <svg>）
+      // Try to find the icon element (which may be <i>or<svg>)
       const icon = this.expandBtn.querySelector('i, svg');
       if (icon) {
         icon.classList.remove('fa-expand');
@@ -199,7 +210,6 @@ class AskAIWidget {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'x-session-id': this.sessionId
         }
       });
 
@@ -235,15 +245,14 @@ class AskAIWidget {
           },
         ],
         session_id: this.sessionId,
-        user_id: "",
+        user_id: this.sessionId,
       };
       console.log('Loading conversation history for session:', this.sessionId);
 
       const response = await fetch(`${this.getApiBaseUrl()}/memory`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-session-id': this.sessionId
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(requestBody)
       });
@@ -264,7 +273,7 @@ class AskAIWidget {
             const isUser = msg.role === 'user';
             const content = msg.content.trim();
 
-            // 简单判断：如果以 [{ 开头且以 }] 结尾，很可能是 JSON 数组
+            // Simple judgment: if it starts with [{and ends with}], it is probably a JSON array
             if (!(content.startsWith('[{') && content.endsWith('}]'))) {
               if (content) {
                 // Generate message ID for historical messages if not present
@@ -331,7 +340,7 @@ class AskAIWidget {
   addMessage(content, type, messageId = null) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `ask-ai-message ${type}`;
-    
+
     // For assistant messages, render as markdown; for user messages, keep as plain text
     if (type === 'assistant') {
       messageDiv.innerHTML = this.renderMarkdown(content);
@@ -409,7 +418,7 @@ class AskAIWidget {
           },
         ],
         session_id: this.sessionId,
-        user_id: "",
+        user_id: this.sessionId,
       };
 
       const response = await fetch(`${this.getApiBaseUrl()}/clear`, {
@@ -424,23 +433,23 @@ class AskAIWidget {
       if (response.ok) {
         // Clear local messages
         this.messages = [];
-        
+
         // Clear UI messages
         const existingMessages = this.messagesContainer.querySelectorAll('.ask-ai-message');
         existingMessages.forEach(msg => msg.remove());
-        
+
         // Remove welcome message if it exists
         const welcomeElement = this.messagesContainer.querySelector('.ask-ai-welcome');
         if (welcomeElement) {
           welcomeElement.remove();
         }
-        
+
         // Add the original welcome message (same as first-time opening)
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className = 'ask-ai-welcome';
         welcomeDiv.innerHTML = '👋 Hi! I\'m Juicer. Ask me anything about Data-Juicer!';
         this.messagesContainer.appendChild(welcomeDiv);
-        
+
         console.log('Conversation history cleared successfully');
       } else {
         console.error('Failed to clear conversation history:', response.status);
@@ -492,7 +501,7 @@ class AskAIWidget {
           },
         ],
         session_id: this.sessionId,
-        user_id: "",
+        user_id: this.sessionId,
       };
 
       console.log('Sending streaming request to:', `${this.getApiBaseUrl()}/process`);
@@ -613,7 +622,7 @@ class AskAIWidget {
                 hasReceivedContent = true;
                 this.scrollToBottom();
               }
-              
+
               // Use server-provided message ID
               if (data.id) {
                 messageId = data.id;
@@ -636,17 +645,17 @@ class AskAIWidget {
     } catch (error) {
       console.error('Fetch error:', error);
       assistantMessageDiv.innerHTML = this.renderMarkdown(
-        '无法连接到 AI 服务，请检查网络或联系管理员。'
+        'Unable to connect to AI service, please check network or contact administrator.'
       );
     } finally {
       this.isTyping = false;
       this.sendBtn.disabled = false;
-      
+
       // Store message in local array with server-provided ID
-      this.messages.push({ 
-        content: assistantMessageDiv.textContent, 
-        type: 'assistant', 
-        timestamp: Date.now(), 
+      this.messages.push({
+        content: assistantMessageDiv.textContent,
+        type: 'assistant',
+        timestamp: Date.now(),
         messageId: messageId  // This will be the server ID if available
       });
     }
@@ -665,13 +674,13 @@ class AskAIWidget {
   }
 
   getApiBaseUrl() {
-    // 优先从 meta 标签获取配置
+    // Prefer configuration from meta tags
     const metaApiUrl = document.querySelector('meta[name="juicer-api-url"]');
     if (metaApiUrl && metaApiUrl.content) {
       return metaApiUrl.content;
     }
 
-    // 从全局变量获取配置
+    // Get configuration from global variables
     if (window.JUICER_API_URL) {
       return window.JUICER_API_URL;
     }
@@ -694,66 +703,19 @@ class AskAIWidget {
 
   renderMarkdown(text) {
     if (!text) return '';
-    
-    // Escape HTML first to prevent XSS
-    let html = text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
 
-    // Code blocks (```language\ncode\n```)
-    html = html.replace(/```(\w+)?\n([\s\S]*?)\n```/g, (match, lang, code) => {
-      const language = lang ? ` class="language-${lang}"` : '';
-      return `<pre><code${language}>${code}</code></pre>`;
-    });
+    try {
+      return marked.parse(text);
+    } catch (error) {
+      console.error('Markdown rendering error:', error);
+      return this.escapeHtml(text).replace(/\n/g, '<br>');
+    }
+  }
 
-    // Inline code (`code`)
-    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-    // Bold (**text** or __text__)
-    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
-
-    // Italic (*text* or _text_)
-    html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-    html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
-
-    // Links [text](url)
-    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-
-    // Headers (# ## ###)
-    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-
-    // Unordered lists (- item or * item)
-    html = html.replace(/^[\s]*[-*] (.+)$/gm, '<li>$1</li>');
-    html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-
-    // Ordered lists (1. item)
-    html = html.replace(/^[\s]*\d+\. (.+)$/gm, '<li>$1</li>');
-    html = html.replace(/(<li>.*<\/li>)/s, (match) => {
-      // Check if this is part of an unordered list already
-      if (match.includes('<ul>')) {
-        return match;
-      }
-      return `<ol>${match}</ol>`;
-    });
-
-    // Line breaks (double newline becomes paragraph)
-    html = html.replace(/\n\n/g, '</p><p>');
-    html = `<p>${html}</p>`;
-
-    // Single line breaks
-    html = html.replace(/\n/g, '<br>');
-
-    // Clean up empty paragraphs
-    html = html.replace(/<p><\/p>/g, '');
-    html = html.replace(/<p>\s*<\/p>/g, '');
-
-    return html;
+  escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
   // Helper function to detect JSON list strings
@@ -771,13 +733,13 @@ class AskAIWidget {
 
     // Watch for theme changes on html or body element
     const targetNode = document.documentElement || document.body;
-    
+
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && 
-            (mutation.attributeName === 'class' || 
-             mutation.attributeName === 'data-theme' ||
-             mutation.attributeName === 'data-bs-theme')) {
+        if (mutation.type === 'attributes' &&
+          (mutation.attributeName === 'class' ||
+            mutation.attributeName === 'data-theme' ||
+            mutation.attributeName === 'data-bs-theme')) {
           this.updateWidgetTheme();
         }
       });
@@ -791,12 +753,11 @@ class AskAIWidget {
 
   updateWidgetTheme() {
     const html = document.documentElement;
-    const body = document.body;
-    
+
     // Check various theme indicators
-    const isDark = 
+    const isDark =
       html.getAttribute('data-theme') === 'dark';
-    
+
     if (isDark) {
       this.modal.classList.add('theme-dark');
       this.button.classList.add('theme-dark');

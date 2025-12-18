@@ -116,11 +116,13 @@ html_sidebars = {
 }
 
 # Static files
-html_css_files = [
-    "custom.css",
-    "ask-ai-widget.css"
+html_css_files = ["custom.css", "ask-ai-widget.css"]
+html_js_files = [
+    "sidebar.js",
+    "ask-ai-widget.js",
+    "switcher-mobile.js",
+    "https://cdn.jsdelivr.net/npm/marked/marked.min.js",
 ]
-html_js_files = ['sidebar.js', 'ask-ai-widget.js', 'switcher-mobile.js']
 
 html_static_path = ["_static"]
 html_extra_path = ["extra"]
@@ -280,9 +282,7 @@ def process_doc_links(app, docname, source):
 
     def link_replacer(match):
         text, path = match.group(1), match.group(2)
-        abs_path = os.path.normpath(
-            os.path.join(os.path.dirname(docname), path)
-        )
+        abs_path = os.path.normpath(os.path.join(os.path.dirname(docname), path))
         return f"[{text}]({repo_base}{abs_path})"
 
     pattern = r"\[([^\]]+)\]\((?!http|#)([^)]*(?<!\.md)(?<!\.rst))\)"

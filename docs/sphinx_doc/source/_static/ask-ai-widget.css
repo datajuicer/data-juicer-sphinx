@@ -173,6 +173,7 @@
   border-radius: 18px;
   font-size: 14px;
   line-height: 1.4;
+  position: relative;
 }
 
 .ask-ai-message.user {
@@ -245,6 +246,8 @@
   max-height: 100px;
   min-height: 40px;
   font-family: inherit;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .ask-ai-input:focus {
