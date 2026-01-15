@@ -23,7 +23,7 @@ AVAILABLE_VERSIONS = [
 REPO_ROOT = os.environ.get("REPO_ROOT")
 
 # QA Copilot configuration
-JUICER_API_URL = os.environ.get("JUICER_API_URL", "")
+JUICER_API_URL = os.environ.get("JUICER_API_URL", "https://datajuicer.online:443")
 
 # -- Path setup --------------------------------------------------------------
 current_dir = os.path.dirname(__file__)
