@@ -22,6 +22,9 @@ AVAILABLE_VERSIONS = [
 ]
 REPO_ROOT = os.environ.get("REPO_ROOT")
 
+# QA Copilot configuration
+JUICER_API_URL = os.environ.get("JUICER_API_URL", "")
+
 # -- Path setup --------------------------------------------------------------
 current_dir = os.path.dirname(__file__)
 if REPO_ROOT and os.path.isdir(REPO_ROOT):
@@ -113,10 +116,13 @@ html_sidebars = {
 }
 
 # Static files
-html_css_files = [
-    "custom.css",
+html_css_files = ["custom.css", "ask-ai-widget.css"]
+html_js_files = [
+    "sidebar.js",
+    "ask-ai-widget.js",
+    "switcher-mobile.js",
+    "https://cdn.jsdelivr.net/npm/marked/marked.min.js",
 ]
-html_js_files = ['sidebar.js', 'switcher-mobile.js']
 
 html_static_path = ["_static"]
 html_extra_path = ["extra"]
@@ -221,6 +227,7 @@ html_context = {
     "github_repo": PROJECT,
     "github_version": GIT_REF_FOR_LINKS,
     "doc_path": "docs",
+    "juicer_api_url": JUICER_API_URL,
 }
 
 
@@ -275,9 +282,7 @@ def process_doc_links(app, docname, source):
 
     def link_replacer(match):
         text, path = match.group(1), match.group(2)
-        abs_path = os.path.normpath(
-            os.path.join(os.path.dirname(docname), path)
-        )
+        abs_path = os.path.normpath(os.path.join(os.path.dirname(docname), path))
         return f"[{text}]({repo_base}{abs_path})"
 
     pattern = r"\[([^\]]+)\]\((?!http|#)([^)]*(?<!\.md)(?<!\.rst))\)"
@@ -313,6 +318,11 @@ def setup(app):
     )
     app.config.html_theme_options.update({"external_links": external_links})
     app.config.root_doc = "index_ZH" if app.config.language == "zh_CN" else "index"
+
+    # Add QA Copilot URL configuration as inline JavaScript
+    if JUICER_API_URL:
+        qa_config_js = f"window.JUICER_API_URL = '{JUICER_API_URL}';"
+        app.add_js_file(None, body=qa_config_js, priority=100)
 
     app.connect("source-read", process_read)
     app.connect("autodoc-skip-member", skip)

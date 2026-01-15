@@ -13,12 +13,14 @@
     <div class="navbar-dropdown-panel" role="menu">
       <div class="dropdown-content">
         {% for lang_code, lang_name in supported_languages.items() %}
-        <a href="{{ pathto('', 1) ~ '../../' ~ get_lang_link(language, pagename, lang_code, non_zh_pages, current_version) }}"
-           class="dropdown-item {% if language == lang_code %}active{% endif %}"
-           role="menuitem"
-           {% if language == lang_code %}aria-current="true"{% endif %}>
-          {{ lang_name }}
-        </a>
+          {% set normalized_lang_code = lang_code.replace('-', '_') %}
+          {% set normalized_current_lang = language.replace('-', '_') %}
+          <a href="{{ pathto('', 1) ~ '../../' ~ get_lang_link(language, pagename, lang_code, non_zh_pages, current_version) }}"
+             class="dropdown-item {% if normalized_lang_code == normalized_current_lang %}active{% endif %}"
+             role="menuitem"
+             {% if normalized_lang_code == normalized_current_lang %}aria-current="true"{% endif %}>
+            {{ lang_name }}
+          </a>
         {% endfor %}
       </div>
     </div>

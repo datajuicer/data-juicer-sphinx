@@ -38,6 +38,20 @@ jobs:
         run: |
           uv pip install --system --upgrade pip
           uv pip install --system -e .[all]
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'docs/sphinx_doc/source/_static/package.json'
+      - name: Install npm dependencies
+        run: |
+          cd docs/sphinx_doc/source/_static
+          npm install
+      - name: Build JavaScript bundle
+        run: |
+          cd docs/sphinx_doc/source/_static
+          npm run build
       - name: Get git tags
         run: |
           git fetch --all --tags
