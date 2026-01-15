@@ -15,7 +15,7 @@ projects:
     display_name: "Sandbox"
     repo_name: "data-juicer-sandbox"
 
-url_template: "https://cmgzn.github.io/{project}/{language}/{version}/"
+url_template: "https://datajuicer.github.io/{project}/{language}/{version}/"
 
 link_order:
   - data-juicer
