@@ -23,7 +23,7 @@ AVAILABLE_VERSIONS = [
 REPO_ROOT = os.environ.get("REPO_ROOT")
 
 # QA Copilot configuration
-JUICER_API_URL = os.environ.get("JUICER_API_URL", "")
+JUICER_API_URL = os.environ.get("JUICER_API_URL", "https://datajuicer.online:443")
 
 # -- Path setup --------------------------------------------------------------
 current_dir = os.path.dirname(__file__)
@@ -116,13 +116,16 @@ html_sidebars = {
 }
 
 # Static files
-html_css_files = ["custom.css", "ask-ai-widget.css"]
+html_css_files = ["custom.css"]
 html_js_files = [
     "sidebar.js",
-    "ask-ai-widget.js",
     "switcher-mobile.js",
     "https://cdn.jsdelivr.net/npm/marked/marked.min.js",
 ]
+if JUICER_API_URL:
+    html_css_files.append("ask-ai-widget.css")
+    html_js_files.append("ask-ai-widget.js")
+
 
 html_static_path = ["_static"]
 html_extra_path = ["extra"]
