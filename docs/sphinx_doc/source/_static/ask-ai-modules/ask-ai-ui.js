@@ -335,8 +335,6 @@ export class AskAIUI {
     if (typingIndicator) {
       typingIndicator.remove();
     }
-
-    const messageId = messageDiv.getAttribute('data-message-id');
     
     // Only append helpSuffix when explicitly requested (at the end of response)
     const contentToRender = addSuffix ? content + (this.i18n.helpSuffix || '') : content;
@@ -424,21 +422,19 @@ export class AskAIUI {
       const lastToolContainer = toolContainers[toolContainers.length - 1];
       let lastContentSegment = lastToolContainer.nextElementSibling;
       
+      // Extract content after the last tool call
+      const contentBeforeLastTool = parseInt(messageDiv.getAttribute('data-content-before-last-tool') || '0', 10);
+      const contentAfterLastTool = content.substring(contentBeforeLastTool);
+      
       if (lastContentSegment && lastContentSegment.classList.contains('message-content-segment')) {
-        // Get the content after the last tool call
-        const contentBeforeLastTool = parseInt(messageDiv.getAttribute('data-content-before-last-tool') || '0', 10);
-        const contentAfterLastTool = content.substring(contentBeforeLastTool);
+        // Update existing content segment
         lastContentSegment.innerHTML = this.renderMarkdown(contentAfterLastTool + (this.i18n.helpSuffix || ''));
-      } else if (content.length > 0) {
+      } else if (contentAfterLastTool.trim()) {
         // No content segment after last tool, but there's content - create one
-        const contentBeforeLastTool = parseInt(messageDiv.getAttribute('data-content-before-last-tool') || '0', 10);
-        const contentAfterLastTool = content.substring(contentBeforeLastTool);
-        if (contentAfterLastTool.trim()) {
-          lastContentSegment = document.createElement('div');
-          lastContentSegment.className = 'message-content-segment';
-          lastContentSegment.innerHTML = this.renderMarkdown(contentAfterLastTool + (this.i18n.helpSuffix || ''));
-          lastToolContainer.after(lastContentSegment);
-        }
+        lastContentSegment = document.createElement('div');
+        lastContentSegment.className = 'message-content-segment';
+        lastContentSegment.innerHTML = this.renderMarkdown(contentAfterLastTool + (this.i18n.helpSuffix || ''));
+        lastToolContainer.after(lastContentSegment);
       }
     }
     

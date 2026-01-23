@@ -186,7 +186,7 @@ var AskAIWidget = (function () {
           session_id: this.sessionId,
           user_id: this.sessionId,
         };
-        
+
         console.log('Fetching memory for session:', this.sessionId);
 
         const response = await fetch(`${this.getApiBaseUrl()}/memory`, {
@@ -201,7 +201,7 @@ var AskAIWidget = (function () {
           const data = await response.json();
           const messages = data.messages || [];
           console.log('Memory fetched:', messages.length, 'messages');
-          
+
           // Return latest messages if limit is specified
           return limit > 0 ? messages.slice(-limit) : messages;
         } else {
@@ -351,11 +351,11 @@ var AskAIWidget = (function () {
                   const toolCallWithId = data.content[0]?.type === "data" ? data.content[0].data : null;
                   const toolCallWithArgs = data.content.length > 1 ? data.content[1] : data.content[0];
                   const toolCall = toolCallWithArgs?.type === "data" ? toolCallWithArgs.data : null;
-                  
+
                   if (toolCall && onToolUse) {
                     const toolName = toolCall.name || 'Unknown Tool';
                     let toolArgs = toolCall.arguments || {};
-                    
+
                     if (typeof toolArgs === 'string') {
                       try {
                         toolArgs = JSON.parse(toolArgs);
@@ -364,7 +364,7 @@ var AskAIWidget = (function () {
                         toolArgs = {};
                       }
                     }
-                    
+
                     const callId = toolCallWithId?.call_id || null;
                     console.log('Tool call detected:', { toolName, toolArgs, callId });
                     onToolUse(toolName, toolArgs, callId);
@@ -378,7 +378,7 @@ var AskAIWidget = (function () {
                   const outputData = data.content.find(item => item.type === "data")?.data;
                   const callId = outputData?.call_id || null;
                   const output = outputData?.output;
-                  
+
                   if (output && callId && onToolComplete) {
                     console.log('Tool output received for call_id:', callId);
                     onToolComplete(callId);
@@ -414,7 +414,7 @@ var AskAIWidget = (function () {
                   .filter(c => c.type === "text")
                   .map(c => c.text)
                   .join('');
-                
+
                 if (fullText && !hasReceivedContent) {
                   currentStreamContent = fullText;
                   hasReceivedContent = true;
@@ -442,59 +442,58 @@ var AskAIWidget = (function () {
 
         // ✨ Fetch from memory to get verified messages with complete metadata
         console.log('Stream ended, fetching latest messages from memory...');
-        const recentMessages = await this.getMemory(2); // Get last 2 messages (user + assistant)
+        const recentMessages = await this.getMemory(10); // Get more messages to debug
 
-        if (recentMessages.length >= 2) {
-          const userMessage = recentMessages[recentMessages.length - 2];
-          const assistantMessage = recentMessages[recentMessages.length - 1];
-          
-          // Validate these are the messages we expect
-          if (userMessage.role === 'user' && assistantMessage.role === 'assistant') {
-            
-            const extractText = (content) => {
-              if (Array.isArray(content)) {
-                return content.filter(c => c.type === 'text').map(c => c.text).join('').trim();
-              }
-              return (content || '').trim();
-            };
-            
-            const userContent = extractText(userMessage.content);
-            const expectedContent = message.trim();
-            
-            if (userContent === expectedContent) {
-              console.log('✓ Memory sync successful');
-              console.log('  User message ID:', userMessage.id);
-              console.log('  Assistant message ID:', assistantMessage.id);
-              
-              // Extract assistant content
-              let verifiedContent = '';
-              if (Array.isArray(assistantMessage.content)) {
-                verifiedContent = assistantMessage.content
-                  .filter(c => c.type === "text")
-                  .map(c => c.text)
-                  .join('');
-              }
-              
-              // Use verified content if stream was incomplete or network was unstable
-              if (verifiedContent && (!streamCompletedSuccessfully || verifiedContent !== currentStreamContent)) {
-                console.log('⚠ Stream content differs from server, using server version');
-                currentStreamContent = verifiedContent;
-                // Update UI with correct content
-                if (onContentUpdate) {
-                  onContentUpdate(currentStreamContent);
-                }
-              }
-              
-              if (onComplete) {
-                onComplete(userMessage, assistantMessage);
-              }
-              return;
-            } else {
-              console.warn('⚠ User message content mismatch - memory may not be synced yet');
-              console.log('  Expected:', expectedContent.substring(0, 50));
-              console.log('  Found in memory:', userContent.substring(0, 50));
+        // Find the last user message and last assistant message
+        const extractText = (content) => {
+          if (Array.isArray(content)) {
+            return content.filter(c => c.type === 'text').map(c => c.text).join('').trim();
+          }
+          return (content || '').trim();
+        };
+
+        // Get the last user message and last assistant message from memory
+        let lastUserMessage = null;
+        let lastAssistantMessage = null;
+
+        for (let i = recentMessages.length - 1; i >= 0; i--) {
+          const msg = recentMessages[i];
+          if (!lastAssistantMessage && msg.role === 'assistant') {
+            lastAssistantMessage = msg;
+          }
+          if (!lastUserMessage && msg.role === 'user') {
+            lastUserMessage = msg;
+          }
+          if (lastUserMessage && lastAssistantMessage) break;
+        }
+
+        const expectedContent = message.trim();
+        const lastUserContent = lastUserMessage ? extractText(lastUserMessage.content) : '';
+
+        if (lastUserMessage && lastAssistantMessage && lastUserContent === expectedContent) {
+          const assistantContent = extractText(lastAssistantMessage.content);
+
+          console.log('✓ Memory sync successful');
+          console.log('  User message ID:', lastUserMessage.id);
+          console.log('  Assistant message ID:', lastAssistantMessage.id);
+
+          // Use server content if stream was incomplete or content differs
+          if (assistantContent && (!streamCompletedSuccessfully || assistantContent !== currentStreamContent)) {
+            console.log('⚠ Stream content differs from server, using server version');
+            currentStreamContent = assistantContent;
+            if (onContentUpdate) {
+              onContentUpdate(currentStreamContent);
             }
           }
+
+          if (onComplete) {
+            onComplete(lastUserMessage, lastAssistantMessage);
+          }
+          return;
+        } else {
+          console.warn('⚠ Could not verify messages from memory');
+          console.log('  Expected user content:', expectedContent.substring(0, 50));
+          console.log('  Found user content:', lastUserContent.substring(0, 50));
         }
 
         // Fallback: memory sync failed, use stream data
@@ -502,7 +501,7 @@ var AskAIWidget = (function () {
         if (onComplete) {
           // Create message objects from stream data
           const fallbackUserMessage = {
-            id: `user_${streamMessageId}`,
+            id: 'user_' + streamMessageId,
             role: 'user',
             content: [{ type: 'text', text: message.trim() }]
           };
@@ -901,8 +900,6 @@ var AskAIWidget = (function () {
       if (typingIndicator) {
         typingIndicator.remove();
       }
-
-      messageDiv.getAttribute('data-message-id');
       
       // Only append helpSuffix when explicitly requested (at the end of response)
       const contentToRender = addSuffix ? content + (this.i18n.helpSuffix || '') : content;
@@ -990,21 +987,19 @@ var AskAIWidget = (function () {
         const lastToolContainer = toolContainers[toolContainers.length - 1];
         let lastContentSegment = lastToolContainer.nextElementSibling;
         
+        // Extract content after the last tool call
+        const contentBeforeLastTool = parseInt(messageDiv.getAttribute('data-content-before-last-tool') || '0', 10);
+        const contentAfterLastTool = content.substring(contentBeforeLastTool);
+        
         if (lastContentSegment && lastContentSegment.classList.contains('message-content-segment')) {
-          // Get the content after the last tool call
-          const contentBeforeLastTool = parseInt(messageDiv.getAttribute('data-content-before-last-tool') || '0', 10);
-          const contentAfterLastTool = content.substring(contentBeforeLastTool);
+          // Update existing content segment
           lastContentSegment.innerHTML = this.renderMarkdown(contentAfterLastTool + (this.i18n.helpSuffix || ''));
-        } else if (content.length > 0) {
+        } else if (contentAfterLastTool.trim()) {
           // No content segment after last tool, but there's content - create one
-          const contentBeforeLastTool = parseInt(messageDiv.getAttribute('data-content-before-last-tool') || '0', 10);
-          const contentAfterLastTool = content.substring(contentBeforeLastTool);
-          if (contentAfterLastTool.trim()) {
-            lastContentSegment = document.createElement('div');
-            lastContentSegment.className = 'message-content-segment';
-            lastContentSegment.innerHTML = this.renderMarkdown(contentAfterLastTool + (this.i18n.helpSuffix || ''));
-            lastToolContainer.after(lastContentSegment);
-          }
+          lastContentSegment = document.createElement('div');
+          lastContentSegment.className = 'message-content-segment';
+          lastContentSegment.innerHTML = this.renderMarkdown(contentAfterLastTool + (this.i18n.helpSuffix || ''));
+          lastToolContainer.after(lastContentSegment);
         }
       }
       
@@ -1508,37 +1503,61 @@ var AskAIWidget = (function () {
 
     /**
      * Load conversation history from API
+     * Merges consecutive assistant messages into single messages
      */
     async loadConversationHistory() {
       const messages = await this.api.loadConversationHistory();
 
       if (messages && messages.length > 0) {
-        messages.forEach(msg => {
-          if (msg.content && typeof msg.content === 'string') {
-            const isUser = msg.role === 'user';
-            const content = msg.content.trim();
-
-            // Skip JSON array messages (tool calls) - use try-catch for more robust detection
-            let isJsonArray = false;
-            try {
-              const parsed = JSON.parse(content);
-              isJsonArray = Array.isArray(parsed);
-            } catch (e) {
-              // Not valid JSON, treat as regular content
-            }
-            
-            if (!isJsonArray) {
-              if (content) {
-                const messageId = msg.id || `history_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-                // For assistant messages from history, add helpSuffix
-                const contentWithSuffix = isUser ? content : content + (this.i18n.helpSuffix || '');
-                this.ui.addMessage(contentWithSuffix, isUser ? 'user' : 'assistant', messageId);
-              }
-            }
+        // Group messages by conversation turn
+        const turns = [];
+        let currentTurn = null;
+        
+        for (let i = 0; i < messages.length; i++) {
+          const msg = messages[i];
+          
+          if (!msg.content || typeof msg.content !== 'string') continue;
+          
+          const content = msg.content.trim();
+          if (!content) continue;
+          
+          // Skip JSON array messages (tool calls - not rendered in history)
+          let isJsonArray = false;
+          try {
+            const parsed = JSON.parse(content);
+            isJsonArray = Array.isArray(parsed);
+          } catch (e) {
+            // Not valid JSON
+          }
+          if (isJsonArray) continue;
+          
+          if (msg.role === 'user') {
+            currentTurn = {
+              user: { content: content, id: msg.id },
+              assistantTexts: []
+            };
+            turns.push(currentTurn);
+          } else if (msg.role === 'assistant' && currentTurn) {
+            currentTurn.assistantTexts.push(content);
+          }
+        }
+        
+        // Render each turn
+        turns.forEach(turn => {
+          // Render user message
+          const userMessageId = turn.user.id || 'history_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+          this.ui.addMessage(turn.user.content, 'user', userMessageId);
+          
+          // Render merged assistant message
+          if (turn.assistantTexts.length > 0) {
+            const mergedText = turn.assistantTexts.join('\n\n');
+            const assistantMessageId = 'history_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            const contentWithSuffix = mergedText + (this.i18n.helpSuffix || '');
+            this.ui.addMessage(contentWithSuffix, 'assistant', assistantMessageId);
           }
         });
 
-        if (messages.length > 0) {
+        if (turns.length > 0) {
           this.ui.scrollToBottom();
         }
       }
