@@ -478,7 +478,7 @@ var AskAIWidget = (function () {
           console.log('  Assistant message ID:', lastAssistantMessage.id);
 
           // Use server content if stream was incomplete or content differs
-          if (assistantContent && (!streamCompletedSuccessfully || assistantContent !== currentStreamContent)) {
+          if (assistantContent && (!streamCompletedSuccessfully)) {
             console.log('⚠ Stream content differs from server, using server version');
             currentStreamContent = assistantContent;
             if (onContentUpdate) {
@@ -960,55 +960,71 @@ var AskAIWidget = (function () {
 
     /**
      * Finalize message content by adding helpSuffix
-     * Called when response is complete - rebuilds all content segments properly
+     * Called when response is complete - just adds helpSuffix to the last content segment
+     * The content segments are already correctly rendered during streaming
      * @param {HTMLElement} messageDiv - Message element
-     * @param {string} content - Final content
+     * @param {string} content - Final content (may be just the last segment from server)
      */
     finalizeMessage(messageDiv, content) {
       if (!messageDiv) return;
       
       const messageId = messageDiv.getAttribute('data-message-id');
-      const contentWithSuffix = content + (this.i18n.helpSuffix || '');
       
       // Get all tool containers
       const toolContainers = messageDiv.querySelectorAll('.tool-calls-inline');
       
       if (toolContainers.length === 0) {
-        // No tool calls - simple case, just render all content
+        // No tool calls - simple case, just render all content with suffix
         let contentWrapper = messageDiv.querySelector('.message-content-segment');
         if (!contentWrapper) {
           contentWrapper = document.createElement('div');
           contentWrapper.className = 'message-content-segment';
           messageDiv.appendChild(contentWrapper);
         }
-        contentWrapper.innerHTML = this.renderMarkdown(contentWithSuffix);
+        contentWrapper.innerHTML = this.renderMarkdown(content + (this.i18n.helpSuffix || ''));
       } else {
-        // Has tool calls - find the last content segment and update it with suffix
+        // Has tool calls - find the last content segment and just add helpSuffix
         const lastToolContainer = toolContainers[toolContainers.length - 1];
         let lastContentSegment = lastToolContainer.nextElementSibling;
         
-        // Extract content after the last tool call
-        const contentBeforeLastTool = parseInt(messageDiv.getAttribute('data-content-before-last-tool') || '0', 10);
-        const contentAfterLastTool = content.substring(contentBeforeLastTool);
-        
         if (lastContentSegment && lastContentSegment.classList.contains('message-content-segment')) {
-          // Update existing content segment
-          lastContentSegment.innerHTML = this.renderMarkdown(contentAfterLastTool + (this.i18n.helpSuffix || ''));
-        } else if (contentAfterLastTool.trim()) {
-          // No content segment after last tool, but there's content - create one
-          lastContentSegment = document.createElement('div');
-          lastContentSegment.className = 'message-content-segment';
-          lastContentSegment.innerHTML = this.renderMarkdown(contentAfterLastTool + (this.i18n.helpSuffix || ''));
-          lastToolContainer.after(lastContentSegment);
+          // Get the current content from the segment (already rendered during streaming)
+          // Just re-render with helpSuffix added
+          lastContentSegment.textContent || '';
+          // Use the stored full content to get the correct segment content
+          const fullContent = messageDiv.getAttribute('data-full-content') || content;
+          const contentBeforeLastTool = parseInt(messageDiv.getAttribute('data-content-before-last-tool') || '0', 10);
+          const segmentContent = contentBeforeLastTool > 0 && contentBeforeLastTool < fullContent.length 
+            ? fullContent.substring(contentBeforeLastTool) 
+            : fullContent;
+          lastContentSegment.innerHTML = this.renderMarkdown(segmentContent + (this.i18n.helpSuffix || ''));
+        } else {
+          // No content segment after last tool - check if there should be one
+          const fullContent = messageDiv.getAttribute('data-full-content') || content;
+          const contentBeforeLastTool = parseInt(messageDiv.getAttribute('data-content-before-last-tool') || '0', 10);
+          const segmentContent = contentBeforeLastTool > 0 && contentBeforeLastTool < fullContent.length 
+            ? fullContent.substring(contentBeforeLastTool) 
+            : '';
+          
+          if (segmentContent.trim()) {
+            lastContentSegment = document.createElement('div');
+            lastContentSegment.className = 'message-content-segment';
+            lastContentSegment.innerHTML = this.renderMarkdown(segmentContent + (this.i18n.helpSuffix || ''));
+            lastToolContainer.after(lastContentSegment);
+          }
         }
       }
       
-      // Store full content for copying
-      messageDiv.setAttribute('data-full-content', content);
+      // Store full content for copying (use existing if available)
+      const existingFullContent = messageDiv.getAttribute('data-full-content');
+      if (!existingFullContent) {
+        messageDiv.setAttribute('data-full-content', content);
+      }
       
       // Add feedback buttons
       if (messageId) {
-        this.addFeedbackButtons(messageDiv, messageId, content);
+        const fullContent = messageDiv.getAttribute('data-full-content') || content;
+        this.addFeedbackButtons(messageDiv, messageId, fullContent);
       }
       
       this.scrollToBottom();

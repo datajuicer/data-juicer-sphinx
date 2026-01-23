@@ -363,7 +363,7 @@ export class AskAIApi {
         console.log('  Assistant message ID:', lastAssistantMessage.id);
 
         // Use server content if stream was incomplete or content differs
-        if (assistantContent && (!streamCompletedSuccessfully || assistantContent !== currentStreamContent)) {
+        if (assistantContent && (!streamCompletedSuccessfully)) {
           console.log('⚠ Stream content differs from server, using server version');
           currentStreamContent = assistantContent;
           if (onContentUpdate) {
