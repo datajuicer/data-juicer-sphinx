@@ -345,7 +345,6 @@ var AskAIWidget = (function () {
 
             try {
               const data = JSON.parse(jsonString);
-              console.log('Received data:', data);
 
               // End of stream
               if (data.object === "response" && data.status === "completed") {
