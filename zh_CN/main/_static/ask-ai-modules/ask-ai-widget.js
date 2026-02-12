@@ -301,6 +301,8 @@ class AskAIWidget {
             this.ui.finalizeThinking(activeThinkingContainer);
             activeThinkingContainer = null;
           }
+          // Collapse completed tool containers when text content arrives
+          this.ui.collapseCompletedToolContainers(assistantMessageDiv);
           this.ui.updateMessageContent(assistantMessageDiv, content);
         },
         // onToolUse
@@ -419,6 +421,8 @@ class AskAIWidget {
           if (typingIndicator) {
             typingIndicator.remove();
           }
+          // Collapse completed tool containers when thinking phase starts
+          this.ui.collapseCompletedToolContainers(assistantMessageDiv);
           // Create a new thinking container if none is active
           if (!activeThinkingContainer) {
             activeThinkingContainer = this.ui.createThinkingContainer(assistantMessageDiv);
