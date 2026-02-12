@@ -1350,7 +1350,6 @@ var AskAIWidget = (function () {
 
     /**
      * Mark a tool call as completed
-     * If all tool calls in the same container are done, auto-collapse the container
      * @param {string} toolId - Tool ID to mark as done
      */
     markToolCallDone(toolId) {
@@ -1362,22 +1361,34 @@ var AskAIWidget = (function () {
           statusSpan.textContent = 'Done';
           statusSpan.classList.remove('running');
         }
+      }
+    }
 
-        // Check if all tools in this container are done, if so auto-collapse
-        const toolContainer = toolItem.closest('.tool-calls-inline');
-        if (toolContainer) {
-          const remainingRunning = toolContainer.querySelectorAll('.tool-call-inline.running');
-          if (remainingRunning.length === 0) {
-            const contentDiv = toolContainer.querySelector('.tool-calls-inline-content');
-            const toggleBtn = toolContainer.querySelector('.tool-calls-inline-toggle');
-            if (contentDiv && toggleBtn) {
-              contentDiv.style.display = 'none';
-              toggleBtn.textContent = '▶';
-              toolContainer.classList.add('collapsed');
-            }
+    /**
+     * Collapse all fully-completed tool containers in a message
+     * Called when a non-tool-call phase starts (text content or thinking)
+     * @param {HTMLElement} messageDiv - Message element
+     */
+    collapseCompletedToolContainers(messageDiv) {
+      if (!messageDiv) return;
+
+      const toolContainers = messageDiv.querySelectorAll('.tool-calls-inline');
+      toolContainers.forEach(toolContainer => {
+        // Skip already collapsed containers
+        if (toolContainer.classList.contains('collapsed')) return;
+
+        // Check if all tools in this container are done (no running ones)
+        const remainingRunning = toolContainer.querySelectorAll('.tool-call-inline.running');
+        if (remainingRunning.length === 0) {
+          const contentDiv = toolContainer.querySelector('.tool-calls-inline-content');
+          const toggleBtn = toolContainer.querySelector('.tool-calls-inline-toggle');
+          if (contentDiv && toggleBtn) {
+            contentDiv.style.display = 'none';
+            toggleBtn.textContent = '▶';
+            toolContainer.classList.add('collapsed');
           }
         }
-      }
+      });
     }
 
     /**
@@ -1830,6 +1841,8 @@ var AskAIWidget = (function () {
               this.ui.finalizeThinking(activeThinkingContainer);
               activeThinkingContainer = null;
             }
+            // Collapse completed tool containers when text content arrives
+            this.ui.collapseCompletedToolContainers(assistantMessageDiv);
             this.ui.updateMessageContent(assistantMessageDiv, content);
           },
           // onToolUse
@@ -1948,6 +1961,8 @@ var AskAIWidget = (function () {
             if (typingIndicator) {
               typingIndicator.remove();
             }
+            // Collapse completed tool containers when thinking phase starts
+            this.ui.collapseCompletedToolContainers(assistantMessageDiv);
             // Create a new thinking container if none is active
             if (!activeThinkingContainer) {
               activeThinkingContainer = this.ui.createThinkingContainer(assistantMessageDiv);
