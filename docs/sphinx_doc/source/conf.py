@@ -58,6 +58,7 @@ extensions = [
 myst_heading_anchors = 4
 myst_enable_extensions = [
     "linkify",
+    "strikethrough",
     "tasklist",
 ]
 
