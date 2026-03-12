@@ -122,6 +122,3 @@ If multi-version builds are enabled, the links will also automatically point to 
 - `Inline code`: `print("hello")`
 - > Blockquote: > This is a quote
 - [Link](https://example.com): [Example Link](https://example.com)
-- Highlight: ==This is highlighted== (if supported)
-- Superscript: x^2^
-- Subscript: H~2~O
