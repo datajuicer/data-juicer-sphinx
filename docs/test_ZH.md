@@ -76,39 +76,15 @@ assets_dirs:
 
 这样配置后，你既可以在本地编辑器中预览文档和图片，也能保证生成的网站中所有媒体资源都能显示。
 
-## 仓库内链接的自动映射
+## Markdown 渲染测试
 
-### 什么是仓库内链接？
-
-在 Markdown 中，你可以使用相对路径引用代码库中的其他文件，例如：
-
-```markdown
-[查看脚本](sphinx_doc/build_versions.py)
-[配置文件](sphinx_doc/source/extra_assets.yaml)
-[相关文档](docs/README.md)
-```
-
-这些 `./xxx` 或 `path/to/file` 形式的相对链接指向的是项目仓库内部的文件
-
-### 自动映射
-
-构建脚本会自动将这些仓库内的相对链接转换为 GitHub 仓库的链接。首先，请确保已经正确设置以下环境变量：
-
-```bash
-export PROJECT = "your-project-name"        # 例如：data-juicer-hub
-export REPO_OWNER = "your-repo-owner"       # 例如：datajuicer
-```
-
-原始的相对链接：
-
-```markdown
-[脚本](sphinx_doc/build_versions.py)
-```
-
-[conf.py](sphinx_doc/source/conf.py) 会自动计算该文件相对于项目根目录的路径，并映射为 GitHub 链接：
-
-```
-https://github.com/datajuicer/data-juicer-sphinx/blob/main/docs/sphinx_doc/build_versions.py
-```
-
-如果启用了多版本构建，链接还会自动指向对应的版本分支。
+- ~~这是一条删除线测试~~
+- **粗体**：**这是粗体**
+- *斜体*：*这是斜体*
+- ***粗斜体***：***这是粗斜体***
+- `行内代码`：`print("hello")`
+- > 引用块：> 这是一段引用
+- [链接](https://example.com)：[示例链接](https://example.com)
+- ==高亮==：==这是高亮文本==
+- 上标：x^2^
+- 下标：H~2~O
