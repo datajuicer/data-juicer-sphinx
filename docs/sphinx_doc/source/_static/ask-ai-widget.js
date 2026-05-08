@@ -759,26 +759,39 @@ var AskAIWidget = (function () {
       if (onSend) {
         this.sendBtn.addEventListener('click', onSend);
 
-        // Handle Enter key in input
-        // Track IME (Input Method Editor) composition state to avoid sending
-        // the message when the user is just confirming a candidate (e.g.
-        // typing English letters under a Chinese IME).
-        let isComposing = false;
+        // Handle Enter key to send message.
+        // IME composition guard: On macOS, when a user confirms an English
+        // candidate (e.g. "json") by pressing Enter under a Chinese IME,
+        // some browsers fire `compositionend` BEFORE `keydown(Enter)`,
+        // causing all standard guards (e.isComposing, keyCode 229) to fail.
+        //
+        // Solution: record the timestamp of the last `compositionend` and
+        // suppress any Enter keydown that arrives within a short window
+        // after it — that Enter was used to confirm the IME candidate,
+        // not to send the message.
+        let lastCompositionEndTime = 0;
         this.input.addEventListener('compositionstart', () => {
-          isComposing = true;
+          lastCompositionEndTime = 0;
         });
         this.input.addEventListener('compositionend', () => {
-          isComposing = false;
+          lastCompositionEndTime = Date.now();
         });
 
         this.input.addEventListener('keydown', (e) => {
-          // Skip Enter when:
-          // - it is not a plain Enter (Shift+Enter inserts a newline);
-          // - the IME is composing: `isComposing` flag, the standard
-          //   `e.isComposing`, or the legacy `keyCode === 229` for
-          //   Safari / older browsers where `isComposing` is unreliable.
           if (e.key !== 'Enter' || e.shiftKey) return;
-          if (isComposing || e.isComposing || e.keyCode === 229) return;
+
+          // Standard IME guards
+          if (e.isComposing || e.keyCode === 229) {
+            e.preventDefault();
+            return;
+          }
+
+          // Timestamp-based guard: if compositionend just fired (within
+          // 100ms), this Enter is from IME confirmation, not a real send.
+          if (Date.now() - lastCompositionEndTime < 100) {
+            e.preventDefault();
+            return;
+          }
 
           e.preventDefault();
           onSend();
