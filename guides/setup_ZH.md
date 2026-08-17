@@ -298,12 +298,13 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: ${{ (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))) || github.event_name == 'workflow_dispatch' }}
         with:
-          if: ${{ (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))) || github.event_name == 'workflow_dispatch' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/sphinx_doc/build
-          # 增量发布：已发布的版本保持不动
-          keep_files: true
+          # 增量发布：已发布的版本保持不动。
+          # 全量重建（full=true）会整站替换，从而清理孤儿文件。
+          keep_files: ${{ !(github.event_name == 'workflow_dispatch' && inputs.full) }}
           cname: your-domain.com  # 可选：如果使用自定义域名
 ```
 

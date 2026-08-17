@@ -105,4 +105,6 @@ jobs:
           publish_dir: "docs/sphinx_doc/build"
           # Incremental deploy: keep previously published versions untouched,
           # only overwrite the version directory built in this run.
-          keep_files: true
+          # A manual full rebuild (full=true) replaces the whole site so that
+          # orphan files from deleted versions/pages get cleaned up.
+          keep_files: ${{ !(github.event_name == 'workflow_dispatch' && inputs.full) }}
