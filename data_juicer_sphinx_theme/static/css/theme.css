@@ -720,7 +720,7 @@ a:hover {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  margin: 3rem 0 2rem;
+  margin: 3rem auto 2rem;
   padding: 0 2rem;
   max-width: var(--content-max-width);
 }
