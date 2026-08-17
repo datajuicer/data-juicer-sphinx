@@ -1,4 +1,4 @@
-# Ask AI Widget - Build Instructions
+# Ask-AI 组件开发指南
 
 ## 📁 项目结构
 
@@ -15,7 +15,7 @@ docs/sphinx_doc/source/_static/
 └── rollup.config.js            # Rollup 打包配置
 ```
 
-> 本文档位于 `docs/BUILD.md`（会渲染进站点），不在 `_static/` 内。
+> 本文档位于 `docs/ask_ai_widget.md`（会渲染进站点），不在 `_static/` 内。
 
 > 组件仅在配置了 `JUICER_API_URL` 时才会加载（见 `docs/sphinx_doc/source/conf.py`）。
 

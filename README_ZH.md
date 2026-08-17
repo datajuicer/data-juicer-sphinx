@@ -55,53 +55,13 @@ python build_versions.py -A -l en
 
 ## 文档
 
-[此处](https://datajuicer.github.io/data-juicer-sphinx/zh_CN/main/index_ZH.html)
+在线文档：[datajuicer.github.io/data-juicer-sphinx](https://datajuicer.github.io/data-juicer-sphinx/zh_CN/main/index_ZH.html)
 
-## 核心原理
-
-### **隔离构建环境（Git Worktree）**
-- 为每个版本（分支/标签）创建独立的 Git 工作树（位于 `.worktrees/<version>`）。
-- 构建完成后自动清理（除非在`docs/sphinx_doc/build_versions.py`中设置 `KEEP_WORKTREES=True`），避免污染主工作区。
-
-### **文档内容聚合**
-- 自动扫描整个工作树，收集所有 `.md` 和 `.rst` 文件（排除 `outputs`, `sphinx_doc`, `.github` 等目录）。
-- 将这些文件复制到统一的 Sphinx 源目录 `docs/sphinx_doc/source/` 下。
-- （data-juicer 算子文档定制）对于 `operators/` 目录下的次级文件夹，自动生成对应的 `index.rst` 和 `index_ZH.rst`，便于算子分类索引。
-
-## 常见问题
-
-### Q1: 构建失败，提示找不到模块
-
-**A**: 确保在构建前安装了所有依赖：
-```bash
-uv pip install .
-```
-
-### Q2: API 文档没有生成
-
-**A**: 检查以下几点：
-- 确保没有使用 `--no-api-doc` 或 `-A` 参数
-- 确保项目有可导入的 Python 模块
-- 检查 `CODE_ROOT` 环境变量是否正确设置
-
-### Q3: 外链不显示
-
-**A**: 
-1. 检查 `external_links.yaml` 配置是否正确
-2. 确认 `PROJECT` 环境变量设置正确
-3. 查看浏览器控制台是否有 JavaScript 错误
-
-### Q4: 中文文档链接不存在
-
-**A**: 确保：
-- 中文文档以 `_ZH.md` 或 `_ZH.rst` 结尾
-- `index_ZH.rst` 存在并正确配置
-
-### Q5: 版本切换后页面不存在
-
-**A**: 不同版本的文档结构可能不同：
-- 旧版本可能没有某些新页面
-- 切换版本会尝试访问相同路径，不存在时会跳回首页
+- [为你的项目启用本模板](guides/setup_ZH.md)——接入、自定义与本地构建
+- [使用 GitHub Actions 部署](guides/deployment_ZH.md)——增量 CI 部署
+- [文档写作指南](guides/writing_ZH.md)——内容、媒体资源与链接映射
+- [常见问题](guides/faq_ZH.md)
+- [工作原理](docs/how_it_works_ZH.md)——构建机制与增量流水线
 
 ## 贡献指南
 

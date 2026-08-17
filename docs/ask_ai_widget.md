@@ -1,4 +1,4 @@
-# Ask AI Widget - Build Instructions
+# Ask-AI Widget Development
 
 ## 📁 Project Structure
 
@@ -15,7 +15,7 @@ docs/sphinx_doc/source/_static/
 └── rollup.config.js            # Rollup bundling configuration
 ```
 
-> This document lives at `docs/BUILD.md` (rendered in the built site), not inside `_static/`.
+> This document lives at `docs/ask_ai_widget.md` (rendered in the built site), not inside `_static/`.
 
 > The widget is only loaded when `JUICER_API_URL` is configured (see `docs/sphinx_doc/source/conf.py`).
 
