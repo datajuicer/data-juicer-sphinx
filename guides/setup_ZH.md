@@ -48,10 +48,8 @@ export MIN_TAG="v0.0.1"               # 指定从此版本开始构建（可选�
 
 ```
 docs/sphinx_doc/source/
-├── index.rst              # 英文主页：项目介绍 + 页眉导航（DOCS/API）
-├── index_ZH.rst           # 中文主页：项目介绍 + 页眉导航（DOCS/API）
-├── docs_index.rst         # 英文文档索引
-├── docs_index_ZH.rst      # 中文文档索引
+├── index.rst              # 英文主页：README 内容 + 侧边栏分组导航
+├── index_ZH.rst           # 中文主页：README 内容 + 侧边栏分组导航
 ├── api.rst                # API 文档索引
 ├── external_links.yaml    # 项目外链
 └── extra_assets.yaml      # 额外资源
@@ -59,23 +57,30 @@ docs/sphinx_doc/source/
 
 **示例：`index.rst`**
 ```rst
-.. 项目介绍
+.. 主页内容
 .. 通常直接 include README.md 即可
 .. include:: README.md
    :parser: myst_parser.sphinx_
 
-.. 页眉导航
-.. 设置几个 toctree，页眉就会显示几个导航
-.. 此处建议只保留 DOCS 和 API，以免页眉导航过多
+.. 侧边栏导航
+.. 带 :caption: 的 :glob: toctree 会在主题左侧边栏中渲染为
+.. 默认展开的分组（如 "Guides"、"Documentation"）
 .. toctree::
    :maxdepth: 2
-   :caption: DOCS
+   :caption: Guides
+   :glob:
 
-   docs_index
+   guides/*
 
 .. toctree::
    :maxdepth: 2
-   :caption: API
+   :caption: Documentation
+   :glob:
+
+   docs/*
+
+.. toctree::
+   :hidden:
 
    api
 ```
@@ -177,6 +182,8 @@ python -m http.server 8000 --directory build
 
 ## 5. GitHub Actions 自动部署
 
+部署是**增量**的：push 到 `main` 只构建 main，push tag 只构建该 tag（tag 不可变，无需重建），PR 只构建当前检出的代码。已发布的版本在 `gh-pages` 上保持不动（`keep_files: true`）。需要重建全部版本时（刷新旧 tag 的主题、清理孤儿文件），用 `workflow_dispatch` 并勾选 `full: true`。
+
 在你的项目中创建 `.github/workflows/docs.yml`：
 
 ```yaml
@@ -193,6 +200,11 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
+    inputs:
+      full:
+        description: "Full rebuild of all versions (refreshes theme on old tags, cleans orphan files)"
+        type: boolean
+        default: false
 
 jobs:
   pages:
@@ -250,7 +262,25 @@ jobs:
       - name: Build documentation
         run: |
           cd docs/sphinx_doc
-          python build_versions.py --tags
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # PR 预览：只构建当前检出的代码，不走 worktree
+            python build_versions.py --current preview
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.full }}" = "true" ]; then
+            # 手动全量重建：所有分支和 tag（清理孤儿文件 + 刷新主题）
+            python build_versions.py --tags
+          elif [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            # tag push：tag 不可变，只构建该 tag
+            python build_versions.py --branches --tags "${GITHUB_REF_NAME}"
+          else
+            # 分支 push（main）或未勾选 full 的手动触发：只构建分支
+            python build_versions.py
+          fi
+
+      - name: Generate versions.json
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+        run: |
+          cd docs/sphinx_doc
+          python build_versions.py --emit-versions-json
 
       - name: Redirect index.html
         run: |
@@ -269,11 +299,18 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')) }}
+          if: ${{ (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))) || github.event_name == 'workflow_dispatch' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/sphinx_doc/build
+          # 增量发布：已发布的版本保持不动
+          keep_files: true
           cname: your-domain.com  # 可选：如果使用自定义域名
 ```
+
+> 增量部署注意事项：
+> - 版本切换器在运行时从 `versions.json` 加载版本列表，旧版本页面能自动看到新发布的 tag。
+> - `keep_files` 不会删除文件：被重建版本中移除的页面可能残留，直到下一次全量重建。
+> - 旧 tag 保留其发布时的主题外观；如需统一刷新，跑一次全量重建。
 
 **启用 GitHub Pages**：
 1. 进入仓库 Settings → Pages

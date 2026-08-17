@@ -1,19 +1,23 @@
 # Data-Juicer Sphinx Documentation Template
 
-This is a unified documentation build template designed for the Data-Juicer ecosystem. Built on Sphinx and pydata-sphinx-theme, it provides multi-version and multi-language documentation capabilities, ensuring consistent documentation appearance and user experience across all subprojects.
+This is a unified documentation build template designed for the Data-Juicer ecosystem. Built on Sphinx and the bundled `data_juicer_theme` (a Mintlify-style custom theme), it provides multi-version and multi-language documentation capabilities, ensuring consistent documentation appearance and user experience across all subprojects.
 
 ## Features
 
 - **Unified Appearance**: All subprojects share the same documentation theme and styling.
-- **Multi-Version Support**: Automatically builds documentation for multiple Git branches and tags.
+- **Multi-Version Support**: Automatically builds documentation for multiple Git branches and tags, with incremental CI deployment (only the changed version is rebuilt; immutable tags are built once).
 - **Multi-Language Support**: Supports both English and Chinese by default.
 - **Ecosystem Interconnectivity**: Enables seamless navigation between different project documentations via header external links.
 - **Markdown-Friendly**: Automatically discovers and integrates Markdown documents within the project.
+- **AI Assistant**: Built-in "Ask Juicer" widget (floating input bar, select-to-ask, resizable side panel) with streaming responses, thinking-mode and tool-call display; activated automatically when `JUICER_API_URL` is configured.
 
 ## Project Structure
 
 ```
 data-juicer-sphinx/
+├── data_juicer_sphinx_theme/                    # Mintlify-style Sphinx theme package
+│   ├── theme.conf / layout.html / search.html   # Theme definition and templates
+│   └── static/                                  # Theme CSS/JS
 ├── docs/
 │   └── sphinx_doc/                              # Sphinx documentation build directory
 │       ├── build_versions.py                    # Multi-version build script (main entry point)
@@ -24,15 +28,13 @@ data-juicer-sphinx/
 │           ├── custom_myst.py                   # Custom MyST extension
 │           ├── external_links.yaml              # External project link configuration
 │           ├── index.rst / index_ZH.rst               # Home page (customization recommended)
-│           ├── docs_index.rst / docs_index_ZH.rst     # Documentation index page (customization recommended)
 │           ├── api.rst                          # API documentation index (customization recommended)
-│           ├── _static/                         # Static assets
-│           │   ├── custom.css                   # Custom styles
-│           │   └── images/                      # Logos and icons
-│           └── _templates/                      # Custom templates
-│               └── version-language-switcher.html
+│           └── _static/                         # Static assets
+│               ├── images/                      # Logos and icons
+│               ├── ask-ai-widget.js / .css      # Bundled Ask-AI widget and styles
+│               └── ask-ai-modules/              # Widget modular sources + rollup build
 ├── guides/                                      # Usage guides
-├── pyproject.toml                               # Project configuration
+├── pyproject.toml                               # Project configuration (registers the theme)
 ├── README.md                                    
 └── README_ZH.md                                 
 ```

@@ -3,5 +3,19 @@
 
 .. toctree::
    :maxdepth: 2
+   :caption: Guides
+   :glob:
 
-   docs_index
+   guides/*
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Documentation
+   :glob:
+
+   docs/*
+
+.. toctree::
+   :hidden:
+
+   api

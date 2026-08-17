@@ -2,37 +2,36 @@
 
 This is a test document. It is located at `docs/test.md` in the root directory and has both Chinese and English versions.
 
-If you can see this document, it means the [script](sphinx_doc/build_versions.py) successfully copied external Markdown documents from the project to the Sphinx source directory (`docs/sphinx_doc/source/docs_index/`) before the Sphinx build, enabling them to be built normally.
+If you can see this document, it means the [script](sphinx_doc/build_versions.py) successfully copied external Markdown documents from the project to the Sphinx source directory (`docs/sphinx_doc/source/`, preserving their relative paths) before the Sphinx build, enabling them to be built normally.
 
 > 💡 **Integration Rules**:  
 > The build script automatically scans all folders in the project root directory except `outputs/`, `sphinx_doc/`, and `.github/`, and copies Markdown files (`.md`) within them to the documentation build source directory.  
 > Therefore, you can write Markdown documents in any unexcluded directories such as `docs/`, `guides/`, `src/`, etc.
 
-As long as these files are correctly referenced through `:glob:` in `docs/sphinx_doc/source/docs_index/index.rst` (English) and `index_ZH.rst` (Chinese), they will typically appear in the final site like this document.
+As long as these files are matched by the `:glob:` toctrees in `docs/sphinx_doc/source/index.rst` (English) and `index_ZH.rst` (Chinese), they will typically appear in the final site like this document.
 
 ## Example
 
 ```rst
-====
-Docs
-====
-
-Files in this project
+.. include:: README.md
+   :parser: myst_parser.sphinx_
 
 .. toctree::
    :maxdepth: 2
+   :caption: Guides
    :glob:
 
    guides/*
 
 .. toctree::
    :maxdepth: 2
+   :caption: Documentation
    :glob:
-   
+
    docs/*
 ```
 
-`docs/*` will match all files copied from the `docs/` directory, such as this document.
+`docs/*` will match all files copied from the `docs/` directory, such as this document. Each captioned toctree renders as an always-expanded group in the left sidebar.
 
 ## Media Asset References
 

@@ -3,5 +3,19 @@
 
 .. toctree::
    :maxdepth: 2
+   :caption: 指南
+   :glob:
 
-   docs_index_ZH
+   guides/*
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 文档
+   :glob:
+
+   docs/*
+
+.. toctree::
+   :hidden:
+
+   api

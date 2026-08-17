@@ -48,10 +48,8 @@ Customize the following files according to your project needs:
 
 ```
 docs/sphinx_doc/source/
-├── index.rst              # English homepage: project intro + header navigation (DOCS/API)
-├── index_ZH.rst           # Chinese homepage: project intro + header navigation (DOCS/API)
-├── docs_index.rst         # English docs index
-├── docs_index_ZH.rst      # Chinese docs index
+├── index.rst              # English homepage: README content + grouped sidebar navigation
+├── index_ZH.rst           # Chinese homepage: README content + grouped sidebar navigation
 ├── api.rst                # API documentation index
 ├── external_links.yaml    # External project links
 └── extra_assets.yaml      # Additional resources
@@ -59,23 +57,30 @@ docs/sphinx_doc/source/
 
 **Example: `index.rst`**
 ```rst
-.. Project Introduction
+.. Home page content
 .. Usually just include README.md directly
 .. include:: README.md
    :parser: myst_parser.sphinx_
 
-.. Header Navigation
-.. Set multiple toctrees to display multiple navigation items in header
-.. It's recommended to keep only DOCS and API to avoid cluttering the header
+.. Sidebar navigation
+.. Captioned glob toctrees render as always-expanded groups (e.g. "Guides",
+.. "Documentation") in the left sidebar of the theme
 .. toctree::
    :maxdepth: 2
-   :caption: DOCS
+   :caption: Guides
+   :glob:
 
-   docs_index
+   guides/*
 
 .. toctree::
    :maxdepth: 2
-   :caption: API
+   :caption: Documentation
+   :glob:
+
+   docs/*
+
+.. toctree::
+   :hidden:
 
    api
 ```
@@ -177,6 +182,8 @@ python -m http.server 8000 --directory build
 
 ## 5. GitHub Actions Automatic Deployment
 
+Deployment is **incremental**: a push to `main` builds only `main`, a tag push builds only that tag (tags are immutable and never need rebuilding), and PRs build only the checked-out code. Previously published versions stay untouched on `gh-pages` (`keep_files: true`). Use `workflow_dispatch` with `full: true` to rebuild every version (refreshes the theme on old tags and cleans orphan files).
+
 Create `.github/workflows/docs.yml` in your project:
 
 ```yaml
@@ -193,6 +200,11 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
+    inputs:
+      full:
+        description: "Full rebuild of all versions (refreshes theme on old tags, cleans orphan files)"
+        type: boolean
+        default: false
 
 jobs:
   pages:
@@ -250,7 +262,25 @@ jobs:
       - name: Build documentation
         run: |
           cd docs/sphinx_doc
-          python build_versions.py --tags
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # PR preview: build the checked-out code only, no worktree
+            python build_versions.py --current preview
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.full }}" = "true" ]; then
+            # Manual full rebuild: every branch and tag (orphan cleanup + theme refresh)
+            python build_versions.py --tags
+          elif [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            # Tag push: tags are immutable, build only this tag
+            python build_versions.py --branches --tags "${GITHUB_REF_NAME}"
+          else
+            # Branch push (main) or dispatch without full: build only branches
+            python build_versions.py
+          fi
+
+      - name: Generate versions.json
+        if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+        run: |
+          cd docs/sphinx_doc
+          python build_versions.py --emit-versions-json
 
       - name: Redirect index.html
         run: |
@@ -269,11 +299,18 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')) }}
+          if: ${{ (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))) || github.event_name == 'workflow_dispatch' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/sphinx_doc/build
+          # Incremental deploy: keep previously published versions untouched
+          keep_files: true
           cname: your-domain.com  # Optional: if using custom domain
 ```
+
+> Notes on incremental deployment:
+> - The version switcher loads its version list from `versions.json` at runtime, so pages of old versions automatically see newly published tags.
+> - `keep_files` never deletes files: pages removed from a rebuilt version may linger until the next full rebuild.
+> - Old tags keep the theme they were published with; run a full rebuild to refresh them.
 
 **Enable GitHub Pages**:
 1. Go to repository Settings → Pages
