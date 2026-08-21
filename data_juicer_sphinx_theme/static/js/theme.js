@@ -167,11 +167,17 @@
 
     // Expand current page's ancestor path
     var current = window.location.pathname;
+    var matched = false;
     nav.querySelectorAll('a').forEach(function(link) {
       var href = link.getAttribute('href');
-      if (href && (current.endsWith(href) || current.includes(href.replace('.html', '')))) {
+      if (!href) return;
+      var hrefPath = href.replace('.html', '').replace(/\/index$/, '/');
+      if (current.endsWith(href) || current.includes(hrefPath)) {
         var li = link.closest('li');
-        if (li) li.classList.add('current');
+        if (li && !matched) {
+          li.classList.add('current');
+          matched = true;
+        }
         // Expand all ancestors
         var parent = li;
         while (parent) {
@@ -365,6 +371,7 @@
 
         var newMain = newDoc.querySelector('main.main-content');
         var newSidebar = newDoc.querySelector('aside.sidebar#sidebar');
+        var newLangDropdown = newDoc.querySelector('#lang-dropdown .dropdown-panel');
         var currentMain = document.querySelector('main.main-content');
         var currentSidebar = document.querySelector('aside.sidebar#sidebar');
 
@@ -381,6 +388,14 @@
 
         if (newSidebar && currentSidebar) {
           currentSidebar.innerHTML = newSidebar.innerHTML;
+        }
+
+        // Update language switcher links for the new page
+        if (newLangDropdown) {
+          var currentLangDropdown = document.querySelector('#lang-dropdown .dropdown-panel');
+          if (currentLangDropdown) {
+            currentLangDropdown.innerHTML = newLangDropdown.innerHTML;
+          }
         }
 
         document.title = newDoc.title;
