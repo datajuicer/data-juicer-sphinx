@@ -1,4 +1,4 @@
-"""Data-Juicer Sphinx Theme - A modern Mintlify-inspired theme."""
+"""Data-Juicer Sphinx Theme - A modern documentation theme."""
 
 import json
 from pathlib import Path
