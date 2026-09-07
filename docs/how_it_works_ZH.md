@@ -23,3 +23,10 @@
 4. **合并发布**：部署步骤使用 `keep_files: true`，只覆盖本次构建的版本目录，已发布的其他版本保持不动。全量重建则不带 `keep_files` 部署，整站替换并清理孤儿文件。
 
 完整 workflow 见[使用 GitHub Actions 部署](../guides/deployment_ZH.md)。
+
+## 各版本的文档内容
+
+构建 tag 时，使用当前 checkout 的 Sphinx 配置、扩展、模板与公共静态资源，
+同时保留该 tag 自己的 `.rst` / `.md` 文档（包括 `index`、`docs_index`）和
+`extra_assets.yaml`。如果 tag 已有文档，不会复制当前 checkout 收集的页面，
+避免把新版本内容或目录带入旧版本。没有文档源文件的版本使用当前模板的默认内容。

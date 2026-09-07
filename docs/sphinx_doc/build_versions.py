@@ -71,22 +71,47 @@ def ensure_clean_worktree(path: Path):
 
 
 def copy_docs_source_to(wt_root: Path):
-    """Copy current docs source to worktree to unify templates and extensions"""
+    """Refresh build support while retaining the version's documentation."""
     src = REPO_ROOT / DOCS_REL
     dst = wt_root / DOCS_REL
     dst.parent.mkdir(parents=True, exist_ok=True)
-    # Drop the branch's own source tree first, otherwise files removed from the
-    # current template (e.g. a deleted index page) would survive as orphans and
-    # trigger "document isn't included in any toctree" warnings.
+
+    def is_version_content(path, source):
+        relative = path.relative_to(source)
+        if relative.parts[0] in {"_static", "_templates", "extra", "locale"}:
+            return False
+        return path.suffix in {".rst", ".md"} or relative.as_posix() == "extra_assets.yaml"
+
+    # These files belong to the tag, not to the checkout launching the build.
+    # Keep its indices, authored pages and asset manifest before refreshing
+    # conf.py, extensions, templates and shared static assets.
+    version_source = dst / "source"
+    preserved = {
+        path.relative_to(dst): path.read_bytes()
+        for path in version_source.rglob("*")
+        if path.is_file() and is_version_content(path, version_source)
+    }
+    has_version_docs = any(path.suffix in {".rst", ".md"} for path in preserved)
+
+    def ignore(directory, names):
+        ignored = set(shutil.ignore_patterns(".git", "build", "__pycache__", "*.pyc")(directory, names))
+        directory = Path(directory)
+        if has_version_docs and directory.is_relative_to(src / "source"):
+            ignored.update(
+                name for name in names
+                if (directory / name).is_file()
+                and is_version_content(directory / name, src / "source")
+            )
+        return ignored
+
     if dst.exists():
-        shutil.rmtree(dst, ignore_errors=True)
+        shutil.rmtree(dst)
     print(f"[COPY] {src} -> {dst}")
-    shutil.copytree(
-        src,
-        dst,
-        dirs_exist_ok=True,
-        ignore=shutil.ignore_patterns(".git", "build", ".pyc"),
-    )
+    shutil.copytree(src, dst, ignore=ignore)
+    for relative, content in preserved.items():
+        target = dst / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(content)
 
 
 def maybe_init_submodules(wt_root: Path):
@@ -195,7 +220,7 @@ def build_one(
         run(["git", "worktree", "add", "--force", str(wt), ref])
         maybe_init_submodules(wt)
 
-        # Override docs/sphinx_doc with current repo version for unified templates
+        # Share current build support, retaining this version's documentation
         copy_docs_source_to(wt)
         copy_markdown_files(wt)
         wt_root = wt
