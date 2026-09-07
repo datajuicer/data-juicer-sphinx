@@ -185,3 +185,30 @@ python -m http.server 8000 --directory build
 ## 下一步
 
 准备发布？继续阅读[使用 GitHub Actions 部署](deployment_ZH.md)。
+
+## Doc 与 API 导航
+
+顶部通过 **Doc** 和 **API** 切换分区，侧栏只展示当前分区的目录。
+API 页面归属由 `api` 文档的 toctree 决定，包含其所有嵌套子页面。
+主题同时兼容首页直接列出文档的结构，以及旧的 `docs_index` /
+`docs_index_ZH` 结构。请在根 toctree 中保留 API 索引（可设为隐藏），
+以便 Sphinx 正常构建搜索与交叉引用。
+
+如果 API 索引使用其他路径，在配置中填写不带扩展名的 Sphinx 文档名：
+
+```python
+html_theme_options["api_root"] = "reference/index"
+```
+
+将 `api_root` 设为空字符串可关闭分区；API 索引不存在时，主题保留普通文档侧栏。
+
+在 `docs/sphinx_doc` 下运行，可用此模板自身的 Python API 预览：
+
+```bash
+PROJECT=data-juicer-sphinx PACKAGE_DIR=data_juicer_sphinx_theme \
+  uv run python build_versions.py --current preview
+uv run python -m http.server 8765 --directory build
+```
+
+访问 `http://localhost:8765/zh_CN/preview/index_ZH.html`，英文入口为
+`http://localhost:8765/en/preview/index.html`。

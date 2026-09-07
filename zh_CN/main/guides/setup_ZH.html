@@ -35,7 +35,13 @@
         </a>
       </div>
 
+      <nav class="navbar-sections" aria-label="Documentation sections">
+        <a href="../index_ZH.html" class="navbar-link active" aria-current="page">Doc</a>
+        <a href="../api.html" class="navbar-link">API</a>
+      </nav>
+
       <nav class="navbar-center">
+        
         <a href="https://datajuicer.github.io/data-juicer/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Core<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
         <a href="https://datajuicer.github.io/data-juicer-sandbox/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Sandbox<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
         <a href="https://datajuicer.github.io/data-juicer-hub/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Hub<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
@@ -43,10 +49,8 @@
       </nav>
 
       <div class="navbar-right">
-        <button class="search-trigger" id="search-trigger" aria-label="Search">
+        <button class="search-trigger" id="search-trigger" aria-label="Search" title="Search (Ctrl/⌘ K)">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14" stroke-linecap="round"/></svg>
-          <span>Search...</span>
-          <kbd>⌘K</kbd>
         </button>
         <div class="dropdown" id="lang-dropdown">
           <button class="dropdown-trigger" aria-haspopup="true" aria-expanded="false">
@@ -94,6 +98,7 @@
               <a href="../index_ZH.html">首页</a>
             </li>
           </ul>
+          <p class="caption"><a href="../index_ZH.html">文档</a></p>
           <p class="caption" role="heading"><span class="caption-text">指南</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">为你的项目启用本模板</a></li>
@@ -106,13 +111,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../docs/how_it_works_ZH.html">工作原理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../docs/ask_ai_widget_ZH.html">Ask-AI 组件开发指南</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a><ul class="simple">
-</ul>
-</li>
-</ul>
 
 
+        </nav>
+        <nav class="sidebar-projects" aria-label="相关项目">
+          <p class="sidebar-projects-title">相关项目</p>
+          
+        <a href="https://datajuicer.github.io/data-juicer/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Core<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
+        <a href="https://datajuicer.github.io/data-juicer-sandbox/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Sandbox<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
+        <a href="https://datajuicer.github.io/data-juicer-hub/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Hub<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
+        <a href="https://datajuicer.github.io/data-juicer-agents/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Agents<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
         </nav>
       </div>
     </aside>
@@ -307,6 +315,27 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
 <h2>下一步<a class="headerlink" href="#id12" title="链接到此标题。">¶</a></h2>
 <p>准备发布？继续阅读<a class="reference internal" href="deployment_ZH.html"><span class="std std-doc">使用 GitHub Actions 部署</span></a>。</p>
 </section>
+<section id="doc-api">
+<h2>Doc 与 API 导航<a class="headerlink" href="#doc-api" title="链接到此标题。">¶</a></h2>
+<p>顶部通过 <strong>Doc</strong> 和 <strong>API</strong> 切换分区，侧栏只展示当前分区的目录。
+API 页面归属由 <code class="docutils literal notranslate"><span class="pre">api</span></code> 文档的 toctree 决定，包含其所有嵌套子页面。
+主题同时兼容首页直接列出文档的结构，以及旧的 <code class="docutils literal notranslate"><span class="pre">docs_index</span></code> /
+<code class="docutils literal notranslate"><span class="pre">docs_index_ZH</span></code> 结构。请在根 toctree 中保留 API 索引（可设为隐藏），
+以便 Sphinx 正常构建搜索与交叉引用。</p>
+<p>如果 API 索引使用其他路径，在配置中填写不带扩展名的 Sphinx 文档名：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">html_theme_options</span><span class="p">[</span><span class="s2">"api_root"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"reference/index"</span>
+</pre></div>
+</div>
+<p>将 <code class="docutils literal notranslate"><span class="pre">api_root</span></code> 设为空字符串可关闭分区；API 索引不存在时，主题保留普通文档侧栏。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">docs/sphinx_doc</span></code> 下运行，可用此模板自身的 Python API 预览：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">PROJECT</span><span class="o">=</span>data-juicer-sphinx<span class="w"> </span><span class="nv">PACKAGE_DIR</span><span class="o">=</span>data_juicer_sphinx_theme<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>build_versions.py<span class="w"> </span>--current<span class="w"> </span>preview
+uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">8765</span><span class="w"> </span>--directory<span class="w"> </span>build
+</pre></div>
+</div>
+<p>访问 <code class="docutils literal notranslate"><span class="pre">http://localhost:8765/zh_CN/preview/index_ZH.html</span></code>，英文入口为
+<code class="docutils literal notranslate"><span class="pre">http://localhost:8765/en/preview/index.html</span></code>。</p>
+</section>
 </section>
 
 
@@ -336,6 +365,7 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
 </ul>
 </li>
 <li><a class="reference internal" href="#id12">下一步</a></li>
+<li><a class="reference internal" href="#doc-api">Doc 与 API 导航</a></li>
 </ul>
 </li>
 </ul>

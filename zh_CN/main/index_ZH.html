@@ -35,7 +35,13 @@
         </a>
       </div>
 
+      <nav class="navbar-sections" aria-label="Documentation sections">
+        <a href="#" class="navbar-link active" aria-current="page">Doc</a>
+        <a href="api.html" class="navbar-link">API</a>
+      </nav>
+
       <nav class="navbar-center">
+        
         <a href="https://datajuicer.github.io/data-juicer/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Core<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
         <a href="https://datajuicer.github.io/data-juicer-sandbox/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Sandbox<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
         <a href="https://datajuicer.github.io/data-juicer-hub/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Hub<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
@@ -43,10 +49,8 @@
       </nav>
 
       <div class="navbar-right">
-        <button class="search-trigger" id="search-trigger" aria-label="Search">
+        <button class="search-trigger" id="search-trigger" aria-label="Search" title="Search (Ctrl/⌘ K)">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14" stroke-linecap="round"/></svg>
-          <span>Search...</span>
-          <kbd>⌘K</kbd>
         </button>
         <div class="dropdown" id="lang-dropdown">
           <button class="dropdown-trigger" aria-haspopup="true" aria-expanded="false">
@@ -94,6 +98,7 @@
               <a href="#">首页</a>
             </li>
           </ul>
+          <p class="caption"><a href="#">文档</a></p>
           <p class="caption" role="heading"><span class="caption-text">指南</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="guides/setup_ZH.html">为你的项目启用本模板</a></li>
@@ -106,13 +111,16 @@
 <li class="toctree-l1"><a class="reference internal" href="docs/how_it_works_ZH.html">工作原理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="docs/ask_ai_widget_ZH.html">Ask-AI 组件开发指南</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul class="simple">
-</ul>
-</li>
-</ul>
 
 
+        </nav>
+        <nav class="sidebar-projects" aria-label="相关项目">
+          <p class="sidebar-projects-title">相关项目</p>
+          
+        <a href="https://datajuicer.github.io/data-juicer/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Core<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
+        <a href="https://datajuicer.github.io/data-juicer-sandbox/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Sandbox<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
+        <a href="https://datajuicer.github.io/data-juicer-hub/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Hub<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
+        <a href="https://datajuicer.github.io/data-juicer-agents/zh_CN/main/" class="navbar-link" target="_blank" rel="noopener">Agents<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
         </nav>
       </div>
     </aside>
@@ -200,6 +208,7 @@ python<span class="w"> </span>build_versions.py<span class="w"> </span>-A<span c
 <li class="toctree-l2"><a class="reference internal" href="guides/setup_ZH.html#id4">3. 自定义配置</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guides/setup_ZH.html#id8">4. 本地构建测试</a></li>
 <li class="toctree-l2"><a class="reference internal" href="guides/setup_ZH.html#id12">下一步</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/setup_ZH.html#doc-api">Doc 与 API 导航</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="guides/deployment_ZH.html">使用 GitHub Actions 部署</a><ul>
