@@ -53,24 +53,19 @@
         </a>
       </div>
 
+      <nav class="navbar-sections" aria-label="Documentation sections">
+        {%- for section in theme_sections %}
+        <a href="{{ pathto(section.doc) }}" class="navbar-link{% if section.active %} active{% endif %}"{% if section.active %} aria-current="page"{% endif %}>{{ section.name }}</a>
+        {%- endfor %}
+      </nav>
+
       <nav class="navbar-center">
-        {%- if theme_nav_links %}
-        {%- for link in theme_nav_links %}
-        <a href="{{ link.url }}" class="navbar-link"{% if link.external %} target="_blank" rel="noopener"{% endif %}>{{ link.name }}{% if link.external %}<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg>{% endif %}</a>
-        {%- endfor %}
-        {%- endif %}
-        {%- if theme_external_links %}
-        {%- for link in theme_external_links %}
-        <a href="{{ link.url }}" class="navbar-link" target="_blank" rel="noopener">{{ link.name }}<svg class="external-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 1.5h7v7M10.5 1.5L4 8"/></svg></a>
-        {%- endfor %}
-        {%- endif %}
+        {% include "project-links.html" %}
       </nav>
 
       <div class="navbar-right">
-        <button class="search-trigger" id="search-trigger" aria-label="Search">
+        <button class="search-trigger" id="search-trigger" aria-label="Search" title="Search (Ctrl/⌘ K)">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14" stroke-linecap="round"/></svg>
-          <span>Search...</span>
-          <kbd>⌘K</kbd>
         </button>
 
         {%- if supported_languages is defined and supported_languages %}
@@ -132,9 +127,20 @@
               <a href="{{ pathto(master_doc) }}">{{ theme_home_label or 'Home' }}</a>
             </li>
           </ul>
+          {%- if theme_sections %}
+          <p class="caption"><a href="{{ pathto(theme_section_root) }}">{{ theme_section_label }}</a></p>
+          {{ theme_section_toctree }}
+          {%- else %}
           {{ toctree(maxdepth=3, collapse=False, titles_only=True, includehidden=True) }}
+          {%- endif %}
 
         </nav>
+        {%- if theme_nav_links or theme_external_links %}
+        <nav class="sidebar-projects" aria-label="{{ '相关项目' if language in ('zh_CN', 'zh-CN') else 'Related projects' }}">
+          <p class="sidebar-projects-title">{{ '相关项目' if language in ('zh_CN', 'zh-CN') else 'Related projects' }}</p>
+          {% include "project-links.html" %}
+        </nav>
+        {%- endif %}
       </div>
     </aside>
     {%- endblock %}

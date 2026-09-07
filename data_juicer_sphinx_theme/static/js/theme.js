@@ -339,9 +339,10 @@
       }).join('');
     }
 
+    var cacheKey = 'dj-versions:' + new URL(url, window.location.href).href;
     var cached = null;
     try {
-      cached = sessionStorage.getItem('dj-versions');
+      cached = sessionStorage.getItem(cacheKey);
     } catch (e) { /* sessionStorage unavailable */ }
     if (cached) {
       try { render(JSON.parse(cached)); return; } catch (e) { /* refetch below */ }
@@ -352,7 +353,7 @@
       return resp.json();
     }).then(function(data) {
       if (data && Array.isArray(data.versions) && data.versions.length) {
-        try { sessionStorage.setItem('dj-versions', JSON.stringify(data.versions)); } catch (e) {}
+        try { sessionStorage.setItem(cacheKey, JSON.stringify(data.versions)); } catch (e) {}
         render(data.versions);
       }
     }).catch(function() {});
@@ -457,6 +458,23 @@
           if (currentLangDropdown) {
             currentLangDropdown.innerHTML = newLangDropdown.innerHTML;
           }
+        }
+
+        // Section links are relative to the current page, just like the sidebar.
+        var sections = document.querySelector('.navbar-sections');
+        var newSections = newDoc.querySelector('.navbar-sections');
+        if (sections && newSections) sections.innerHTML = newSections.innerHTML;
+
+        // Keep version destinations in sync after navigating to a nested page.
+        var versionDropdown = document.querySelector('#version-dropdown');
+        var newVersionDropdown = newDoc.querySelector('#version-dropdown');
+        if (versionDropdown && newVersionDropdown) {
+          ['data-versions-url', 'data-link-prefix', 'data-page', 'data-current'].forEach(function(name) {
+            versionDropdown.setAttribute(name, newVersionDropdown.getAttribute(name) || '');
+          });
+          versionDropdown.querySelector('.dropdown-panel').innerHTML =
+            newVersionDropdown.querySelector('.dropdown-panel').innerHTML;
+          initVersionSwitcher();
         }
 
         document.title = newDoc.title;

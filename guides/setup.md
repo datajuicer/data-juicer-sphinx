@@ -185,3 +185,31 @@ python -m http.server 8000 --directory build
 ## Next Step
 
 Ready to publish? Continue with [Deploy with GitHub Actions](deployment.md).
+
+## Doc and API navigation
+
+The header separates **Doc** and **API**. Each section shows its own sidebar;
+API membership follows the `api` document's toctree, including nested pages.
+Both a flat home-page toctree and the older `docs_index` / `docs_index_ZH`
+layout are supported. Keep the API index in the root toctree (it can be hidden)
+so Sphinx can discover all pages for search and cross references.
+
+For a different API index, configure its Sphinx document name without a suffix:
+
+```python
+html_theme_options["api_root"] = "reference/index"
+```
+
+Set `api_root` to an empty string to disable the split. If the API index does
+not exist, the theme retains the ordinary documentation sidebar.
+
+To preview this template with its own Python API, run from `docs/sphinx_doc`:
+
+```bash
+PROJECT=data-juicer-sphinx PACKAGE_DIR=data_juicer_sphinx_theme \
+  uv run python build_versions.py --current preview
+uv run python -m http.server 8765 --directory build
+```
+
+Open `http://localhost:8765/en/preview/index.html` (or
+`http://localhost:8765/zh_CN/preview/index_ZH.html` for Chinese).
