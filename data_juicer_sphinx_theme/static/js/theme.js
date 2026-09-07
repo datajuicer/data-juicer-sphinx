@@ -5,6 +5,13 @@
 (function() {
   'use strict';
 
+  function findHashTarget(hash) {
+    if (!hash || hash === '#') return null;
+    var id = hash.slice(1);
+    try { id = decodeURIComponent(id); } catch (err) { /* Keep literal malformed fragments. */ }
+    return document.getElementById(id);
+  }
+
   // ==================== Dark Mode ====================
   function syncPygmentsDark(theme) {
     var link = document.getElementById('pygments-dark-css');
@@ -118,7 +125,7 @@
     tocLinks.forEach(function(link) {
       var id = link.getAttribute('href');
       if (id && id.startsWith('#')) {
-        var heading = document.getElementById(id.slice(1));
+        var heading = findHashTarget(id);
         if (heading) headings.push({ el: heading, link: link });
       }
     });
@@ -492,7 +499,7 @@
         // Handle hash scrolling
         var hashTarget = window.location.hash;
         if (hashTarget) {
-          var el = document.querySelector(hashTarget);
+          var el = findHashTarget(hashTarget);
           if (el) {
             el.scrollIntoView({ behavior: 'smooth' });
           }
@@ -534,7 +541,7 @@
       // Same-page hash link
       if (anchor.pathname === window.location.pathname && anchor.hash) {
         e.preventDefault();
-        var target = document.querySelector(anchor.hash);
+        var target = findHashTarget(anchor.hash);
         if (target) {
           target.scrollIntoView({ behavior: 'smooth' });
           history.pushState(null, '', anchor.hash);
