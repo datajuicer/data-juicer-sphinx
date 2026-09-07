@@ -23,3 +23,11 @@ Each CI run builds only the version that actually changed:
 4. **Merge-publish**: the deploy step uses `keep_files: true`, overwriting only the version directory built in this run while previously published versions stay untouched. A full rebuild deploys without `keep_files`, replacing the whole site and cleaning up orphan files.
 
 See [Deploy with GitHub Actions](../guides/deployment.md) for the complete workflow configuration.
+
+## Version-specific documentation
+
+Tag builds use the current checkout's Sphinx configuration, extensions, templates
+and shared static assets. Each tag retains its own `.rst` / `.md` source pages
+(including `index` and `docs_index`) and `extra_assets.yaml`. Collected pages from
+the launching checkout are excluded when the tag already has documentation.
+Versions without documentation source use the current template's defaults.
