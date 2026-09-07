@@ -157,6 +157,13 @@
 </ol>
 <p>完整 workflow 见<a class="reference internal" href="../guides/deployment_ZH.html"><span class="std std-doc">使用 GitHub Actions 部署</span></a>。</p>
 </section>
+<section id="id3">
+<h2>各版本的文档内容<a class="headerlink" href="#id3" title="链接到此标题。">¶</a></h2>
+<p>构建 tag 时，使用当前 checkout 的 Sphinx 配置、扩展、模板与公共静态资源，
+同时保留该 tag 自己的 <code class="docutils literal notranslate"><span class="pre">.rst</span></code> / <code class="docutils literal notranslate"><span class="pre">.md</span></code> 文档（包括 <code class="docutils literal notranslate"><span class="pre">index</span></code>、<code class="docutils literal notranslate"><span class="pre">docs_index</span></code>）和
+<code class="docutils literal notranslate"><span class="pre">extra_assets.yaml</span></code>。如果 tag 已有文档，不会复制当前 checkout 收集的页面，
+避免把新版本内容或目录带入旧版本。没有文档源文件的版本使用当前模板的默认内容。</p>
+</section>
 </section>
 
 
@@ -169,6 +176,7 @@
 <li><a class="reference internal" href="#git-worktree">隔离构建环境（Git Worktree）</a></li>
 <li><a class="reference internal" href="#id2">文档内容聚合</a></li>
 <li><a class="reference internal" href="#ci">增量 CI 流水线</a></li>
+<li><a class="reference internal" href="#id3">各版本的文档内容</a></li>
 </ul>
 </li>
 </ul>

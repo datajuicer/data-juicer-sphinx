@@ -157,6 +157,14 @@
 </ol>
 <p>See <a class="reference internal" href="../guides/deployment.html"><span class="std std-doc">Deploy with GitHub Actions</span></a> for the complete workflow configuration.</p>
 </section>
+<section id="version-specific-documentation">
+<h2>Version-specific documentation<a class="headerlink" href="#version-specific-documentation" title="Link to this heading">¶</a></h2>
+<p>Tag builds use the current checkout’s Sphinx configuration, extensions, templates
+and shared static assets. Each tag retains its own <code class="docutils literal notranslate"><span class="pre">.rst</span></code> / <code class="docutils literal notranslate"><span class="pre">.md</span></code> source pages
+(including <code class="docutils literal notranslate"><span class="pre">index</span></code> and <code class="docutils literal notranslate"><span class="pre">docs_index</span></code>) and <code class="docutils literal notranslate"><span class="pre">extra_assets.yaml</span></code>. Collected pages from
+the launching checkout are excluded when the tag already has documentation.
+Versions without documentation source use the current template’s defaults.</p>
+</section>
 </section>
 
 
@@ -169,6 +177,7 @@
 <li><a class="reference internal" href="#isolated-build-environment-git-worktree">Isolated Build Environment (Git Worktree)</a></li>
 <li><a class="reference internal" href="#documentation-content-aggregation">Documentation Content Aggregation</a></li>
 <li><a class="reference internal" href="#incremental-ci-pipeline">Incremental CI Pipeline</a></li>
+<li><a class="reference internal" href="#version-specific-documentation">Version-specific documentation</a></li>
 </ul>
 </li>
 </ul>
